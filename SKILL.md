@@ -109,6 +109,18 @@ Update client-side summary when checkbox changes. Total should equal main promo 
 - `custom_url`: redirect to configured URL.
 - In iframe, use `window.parent.postMessage(url, "*")`; otherwise use `window.location.assign(url)`.
 
+## Pixel / Analytics
+
+- Scalev injects Meta Pixel and other analytics scripts server-side. Custom HTML must give these scripts time to fire before redirecting.
+- Always add a configurable delay before `navigateAfterOrder` / `navigate` to allow Scalev-injected pixel events to complete.
+- Use `pixelDelayMs` config (default 600ms) in checkout templates. Do not hardcode pixel IDs or event names.
+- Pattern: `setTimeout(function() { window.location.assign(url); }, pixelDelayMs);`
+- For iframe: `setTimeout(function() { window.parent.postMessage(url, "*"); }, pixelDelayMs);`
+- Do not skip this delay — missing delay causes Meta Pixel events (PageView, Purchase, etc.) to not fire before page unload.
+- Event page-load (PageView, ATC, dll) jangan di-hardcode. Baca dari Scalev page config: `scalev.page.events` atau `scalev.page.analyticsEvents`. Gunakan `firePageEvents()`.
+- Kalau Scalev tidak kirim page event config, jangan fallback ke hardcode — biarkan kosong. Scalev handle otomatis sesuai pengaturan dashboard.
+- Hanya event dinamis (seperti Purchase dengan `orderId`) yang boleh dipanggil manual lewat `track()`.
+
 ## References
 
 Load only needed references:

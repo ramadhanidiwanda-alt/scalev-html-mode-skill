@@ -193,7 +193,8 @@
       fallbackPromoPrice: 79000,
       orderBumpFallbackTitle: "30 Hook Konten Viral",
       orderBumpFallbackDescription: "Tambahan hook siap pakai untuk Reels, TikTok, dan caption promo.",
-      qrisFirst: true
+      qrisFirst: true,
+      pixelDelayMs: 600
     };
 
     var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
@@ -387,8 +388,12 @@
     }
 
     function navigateAfterOrder(url) {
-      if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
-      window.location.assign(url);
+      var delay = typeof CHECKOUT_TEMPLATE_CONFIG.pixelDelayMs === "number" ? CHECKOUT_TEMPLATE_CONFIG.pixelDelayMs : 0;
+      function go() {
+        if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
+        window.location.assign(url);
+      }
+      if (delay > 0) { setTimeout(go, delay); } else { go(); }
     }
 
     function redirectAfterOrder(order) {

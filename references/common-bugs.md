@@ -43,3 +43,18 @@ Fix: support `typeof product.images[0] === "string"` in image helper.
 
 Cause: mobile CSS uses fixed height or small `max-height` with object-fit behavior.
 Fix: stack image above copy and use `width: 100%; height: auto; max-height: none; object-fit: contain;`.
+
+## Meta Pixel tidak membaca event setelah checkout
+
+Cause: redirect langsung (`window.location.assign`) setelah `createOrder()` tanpa delay. Scalev inject Meta Pixel server-side, tapi script pixel tidak sempat fire karena halaman langsung pindah.
+Fix: tambahkan `pixelDelayMs` (default 600ms) sebelum redirect. Gunakan `setTimeout` di dalam `navigateAfterOrder` / `navigate`. Jangan hardcode pixel ID atau event — biarkan Scalev yang inject.
+
+## Meta Pixel event Purchase tidak muncul
+
+Cause: sama seperti di atas — redirect terlalu cepat.
+Fix: pastikan `navigateAfterOrder` pakai `setTimeout` dengan `pixelDelayMs`. Delay berlaku untuk semua redirect type: `success_page`, `direct_to_whatsapp`, `custom_url`, dll.
+
+## Page-load event tidak sesuai pengaturan Scalev
+
+Cause: event page-load di-hardcode (misal `track("facebook", "PageView")`), bukan baca dari konfigurasi halaman Scalev.
+Fix: gunakan `firePageEvents()` yang baca dari `scalev.page.events` atau `scalev.page.analyticsEvents`. Jangan hardcode provider atau event name. Kalau Scalev tidak kirim config, biarkan kosong — jangan fallback ke hardcode.

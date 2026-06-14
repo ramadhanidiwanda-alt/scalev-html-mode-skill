@@ -54,6 +54,7 @@
     var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
     var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
     var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
+    var pixelDelayMs = 600;
 
     function rupiah(value) {
       return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
@@ -91,8 +92,11 @@
     }
 
     function navigate(url) {
-      if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
-      window.location.assign(url);
+      function go() {
+        if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
+        window.location.assign(url);
+      }
+      if (pixelDelayMs > 0) { setTimeout(go, pixelDelayMs); } else { go(); }
     }
 
     var product = store.products[0] || {};
