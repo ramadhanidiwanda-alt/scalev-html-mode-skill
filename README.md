@@ -35,7 +35,9 @@ scalev-html-mode-skill/
 │   └── openai.yaml
 ├── assets/
 │   └── templates/
-│       └── checkout-digital.html
+│       ├── checkout-digital.html
+│       ├── checkout-digital-template.html
+│       └── landing-digital-template.html
 ├── scripts/
 │   └── check-html-js.mjs
 ├── SKILL.md

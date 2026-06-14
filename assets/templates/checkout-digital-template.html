@@ -1,0 +1,463 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout Produk Digital</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Rubik:wght@600;700;800;900&display=swap');
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --color-primary: #6366f1;
+      --color-primary-dark: #4f46e5;
+      --color-accent: #16a34a;
+      --color-accent-dark: #15803d;
+      --color-background: #eef2ff;
+      --color-surface: #ffffff;
+      --color-soft: #f8fafc;
+      --color-text: #1e1b4b;
+      --color-heading: #312e81;
+      --color-muted: #64748b;
+      --color-border: #c7d2fe;
+      --color-danger: #dc2626;
+      --color-success: #15803d;
+      --shadow-card: 0 18px 45px rgba(49, 46, 129, 0.12);
+      --radius: 24px;
+      --radius-sm: 16px;
+      --font-heading: 'Rubik', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-body: 'Nunito Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100dvh; font-family: var(--font-body); color: var(--color-text); background: radial-gradient(circle at top left, #dbeafe 0, transparent 34%), var(--color-background); line-height: 1.55; -webkit-font-smoothing: antialiased; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .skip-link { position: absolute; left: 16px; top: -80px; z-index: 999; background: var(--color-heading); color: #fff; padding: 12px 16px; border-radius: 12px; }
+    .skip-link:focus { top: 16px; }
+    .page { width: min(100% - 32px, 1040px); margin: 0 auto; padding: 28px 0 40px; }
+    .header { display: grid; gap: 16px; margin-bottom: 22px; }
+    .brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 900; color: var(--color-heading); }
+    .brand-mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 14px; background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); color: #fff; }
+    .header-card { padding: 22px; border: 1px solid var(--color-border); border-radius: var(--radius); background: rgba(255,255,255,0.86); box-shadow: var(--shadow-card); }
+    .eyebrow { display: inline-flex; width: fit-content; padding: 7px 12px; border-radius: 999px; background: var(--color-background); color: var(--color-primary-dark); font-size: 0.78rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.08em; }
+    h1, h2, h3 { margin: 0; font-family: var(--font-heading); color: var(--color-heading); line-height: 1.12; }
+    h1 { margin-top: 12px; font-size: clamp(2rem, 7vw, 3.4rem); letter-spacing: -0.05em; }
+    .header-card p { max-width: 720px; margin: 12px 0 0; color: #475569; font-size: 1.04rem; }
+    .layout { display: grid; gap: 18px; }
+    .card { padding: 20px; border-radius: var(--radius); background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: 0 1px 0 rgba(99,102,241,0.05); }
+    .card-title { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; font-size: 1.16rem; }
+    .step { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; border-radius: 999px; background: var(--color-primary); color: #fff; font-family: var(--font-body); font-size: 0.88rem; font-weight: 900; }
+    .product-card { display: grid; gap: 14px; }
+    .product-top { display: grid; gap: 14px; }
+    .product-preview { min-height: 170px; border-radius: 20px; padding: 20px; display: grid; align-content: end; background: linear-gradient(135deg, #312e81, #6366f1); color: #fff; }
+    .product-preview strong { font-family: var(--font-heading); font-size: 1.55rem; line-height: 1.05; }
+    .product-badge { display: inline-flex; width: fit-content; margin-bottom: 10px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,0.18); font-weight: 900; font-size: 0.76rem; }
+    .product-info p { margin: 8px 0 0; color: var(--color-muted); }
+    .price-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+    .normal-price { color: var(--color-muted); text-decoration: line-through; font-weight: 800; }
+    .promo-price { color: var(--color-primary-dark); font-family: var(--font-heading); font-size: 2rem; font-weight: 900; letter-spacing: -0.04em; }
+    .digital-note { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 16px; background: #ecfdf5; color: #14532d; font-weight: 800; font-size: 0.92rem; }
+    .form-grid { display: grid; gap: 14px; }
+    .field { display: grid; gap: 7px; }
+    .label { font-weight: 900; color: var(--color-heading); }
+    .required { color: var(--color-danger); }
+    .input { width: 100%; min-height: 48px; padding: 13px 14px; border: 1px solid var(--color-border); border-radius: 14px; background: #fff; color: var(--color-text); transition: border 180ms ease, box-shadow 180ms ease; }
+    .input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.16); }
+    .error { display: none; color: var(--color-danger); font-size: 0.88rem; font-weight: 800; }
+    .field.is-error .input { border-color: var(--color-danger); }
+    .field.is-error .error { display: block; }
+    .payment-grid { display: grid; gap: 10px; }
+    .payment-option { position: absolute; opacity: 0; pointer-events: none; }
+    .payment-label { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 14px; border: 1px solid var(--color-border); border-radius: 16px; background: #fff; cursor: pointer; transition: border 180ms ease, box-shadow 180ms ease, transform 180ms ease; }
+    .payment-label:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(49,46,129,0.08); }
+    .payment-option:focus-visible + .payment-label { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+    .payment-option:checked + .payment-label { border-color: var(--color-primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.14); }
+    .payment-name { font-weight: 900; color: var(--color-heading); }
+    .payment-pill { padding: 4px 8px; border-radius: 999px; background: var(--color-background); color: var(--color-primary-dark); font-size: 0.76rem; font-weight: 900; }
+    .discount-row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 18px; border: 0; border-radius: 999px; font-weight: 900; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, opacity 180ms ease; }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(49,46,129,0.10); }
+    .btn:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 4px; }
+    .btn-primary { width: 100%; background: var(--color-accent); color: #fff; }
+    .btn-primary:hover { background: var(--color-accent-dark); }
+    .btn-secondary { background: var(--color-heading); color: #fff; }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; box-shadow: none; }
+    .alert { display: none; padding: 12px 14px; border-radius: 16px; font-weight: 800; font-size: 0.92rem; }
+    .alert.show { display: block; }
+    .alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }
+    .alert-info { background: #eef2ff; color: var(--color-heading); border: 1px solid var(--color-border); }
+    .alert-success { background: #ecfdf5; color: #14532d; border: 1px solid #bbf7d0; }
+    .bump { display: none; gap: 14px; padding: 14px; border: 1px solid var(--color-border); border-radius: 18px; background: linear-gradient(180deg, #fff, #f8fafc); }
+    .bump.show { display: grid; }
+    .bump-preview { min-height: 132px; border-radius: 16px; padding: 16px; display: grid; align-content: end; background: linear-gradient(135deg, #16a34a, #312e81); color: #fff; }
+    .bump-preview strong { font-family: var(--font-heading); font-size: 1.22rem; line-height: 1.1; }
+    .bump p { margin: 8px 0; color: var(--color-muted); }
+    .check-row { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; font-weight: 900; color: var(--color-heading); }
+    .check-row input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--color-accent); }
+    .summary { display: grid; gap: 10px; }
+    .summary-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--color-muted); font-weight: 800; }
+    .summary-row.total { padding-top: 12px; border-top: 1px solid var(--color-border); color: var(--color-heading); font-size: 1.12rem; }
+    .summary-row.total strong { font-family: var(--font-heading); font-size: 1.6rem; letter-spacing: -0.04em; }
+    .loading-overlay { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; background: rgba(238,242,255,0.78); backdrop-filter: blur(8px); }
+    .loading-overlay.show { display: flex; }
+    .loader-card { display: grid; gap: 12px; place-items: center; padding: 22px; border-radius: 22px; background: #fff; border: 1px solid var(--color-border); box-shadow: var(--shadow-card); font-weight: 900; color: var(--color-heading); }
+    .spinner { width: 42px; height: 42px; border-radius: 999px; border: 4px solid var(--color-border); border-top-color: var(--color-primary); animation: spin 800ms linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @media (min-width: 760px) {
+      .header { grid-template-columns: 1fr; }
+      .layout { grid-template-columns: 1.05fr 0.95fr; align-items: start; }
+      .sticky { position: sticky; top: 22px; }
+      .product-top { grid-template-columns: 0.9fr 1.1fr; align-items: center; }
+      .discount-row { grid-template-columns: 1fr auto; }
+    }
+    @media (max-width: 420px) {
+      .page { width: min(100% - 24px, 1040px); }
+      .card, .header-card { padding: 16px; }
+      .promo-price { font-size: 1.7rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#checkout-main">Lewati ke checkout</a>
+  <div class="page">
+    <header class="header" role="banner">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">D</span><span data-brand-name>DigitalPro</span></div>
+      <div class="header-card">
+        <span class="eyebrow">Checkout Produk Digital</span>
+        <h1 data-heading>Amankan akses bundle digital kamu.</h1>
+        <p data-subheading>Isi data dengan benar. Akses produk digital mengikuti instruksi pembayaran dan pengaturan toko di Scalev.</p>
+      </div>
+    </header>
+
+    <main id="checkout-main" class="layout">
+      <section aria-label="Data checkout">
+        <div class="card product-card" id="product-card">
+          <h2 class="card-title"><span class="step" aria-hidden="true">1</span> Produk Digital</h2>
+          <div id="product-content" class="product-top">
+            <div class="product-preview"><span class="product-badge">Memuat</span><strong>Produk digital</strong></div>
+            <div class="product-info"><p>Memuat data produk dari Scalev…</p></div>
+          </div>
+          <div class="digital-note"><span aria-hidden="true">✓</span><span>Digital-only: tanpa alamat, tanpa kurir, tanpa ongkir.</span></div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <h2 class="card-title"><span class="step" aria-hidden="true">2</span> Data Pembeli</h2>
+          <div id="form-alert" class="alert alert-error" role="alert"></div>
+          <div class="form-grid">
+            <label class="field" id="field-name"> <span class="label">Nama Lengkap <span class="required">*</span></span><input class="input" id="cust-name" type="text" autocomplete="name" placeholder="Nama kamu" /><span class="error">Nama wajib diisi.</span></label>
+            <label class="field" id="field-phone"> <span class="label">Nomor WhatsApp <span class="required">*</span></span><input class="input" id="cust-phone" type="tel" autocomplete="tel" placeholder="0812xxxxxxxx" /><span class="error">Nomor WhatsApp wajib diisi.</span></label>
+            <label class="field" id="field-email"> <span class="label">Email <span class="required">*</span></span><input class="input" id="cust-email" type="email" autocomplete="email" placeholder="nama@email.com" /><span class="error">Email valid wajib diisi.</span></label>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <h2 class="card-title"><span class="step" aria-hidden="true">3</span> Metode Pembayaran</h2>
+          <div id="payment-content"><div class="alert alert-info show">Memuat metode pembayaran…</div></div>
+        </div>
+
+        <div class="card" style="margin-top:18px;">
+          <h2 class="card-title"><span class="step" aria-hidden="true">4</span> Kode Diskon</h2>
+          <div class="discount-row">
+            <input class="input" id="discount-code" type="text" placeholder="Masukkan kode diskon jika ada" autocomplete="off" />
+            <button class="btn btn-secondary" id="discount-btn" type="button">Gunakan</button>
+          </div>
+          <div id="discount-msg" class="alert" style="margin-top:12px;" role="status"></div>
+        </div>
+      </section>
+
+      <aside class="sticky" aria-label="Ringkasan pesanan">
+        <div class="card">
+          <h2 class="card-title"><span class="step" aria-hidden="true">5</span> Ringkasan</h2>
+          <div id="order-bump" class="bump" aria-live="polite"></div>
+          <div id="summary-content" class="summary" style="margin-top:16px;"></div>
+          <button class="btn btn-primary" id="submit-btn" type="button" style="margin-top:18px;">Buat Pesanan Digital</button>
+          <p style="margin:12px 0 0; color:var(--color-muted); font-size:.9rem; font-weight:700;">Dengan melanjutkan, kamu akan diarahkan sesuai pengaturan after-checkout Scalev.</p>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <div class="loading-overlay" id="loading-overlay" aria-live="polite" aria-busy="true">
+    <div class="loader-card"><div class="spinner" aria-hidden="true"></div><span>Membuat pesanan…</span></div>
+  </div>
+
+  <script>
+    var CHECKOUT_TEMPLATE_CONFIG = {
+      brandName: "DigitalPro",
+      fallbackTitle: "Bundle Template Bisnis Digital UMKM",
+      fallbackDescription: "Paket template, checklist, spreadsheet, dan panduan untuk membantu jualan digital lebih rapi.",
+      fallbackNormalPrice: 299000,
+      fallbackPromoPrice: 79000,
+      orderBumpFallbackTitle: "30 Hook Konten Viral",
+      orderBumpFallbackDescription: "Tambahan hook siap pakai untuk Reels, TikTok, dan caption promo.",
+      qrisFirst: true
+    };
+
+    var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
+    var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
+    var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
+    var appliedDiscount = null;
+
+    function $(id) { return document.getElementById(id); }
+
+    function escapeHtml(value) {
+      return String(value || "").replace(/[&<>"]/g, function (char) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char];
+      });
+    }
+
+    function rupiah(value) {
+      return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
+    }
+
+    function productImage(product) {
+      if (!product) return "";
+      if (product.imageUrl) return product.imageUrl;
+      if (product.thumbnailUrl) return product.thumbnailUrl;
+      if (product.image) return product.image;
+      if (product.coverImageUrl) return product.coverImageUrl;
+      if (product.images && product.images.length) {
+        if (typeof product.images[0] === "string") return product.images[0];
+        return product.images[0].url || product.images[0].imageUrl || product.images[0].src || "";
+      }
+      return "";
+    }
+
+    function getMainProductData() {
+      var product = store.products && store.products[0] ? store.products[0] : {};
+      var variant = product.variants && product.variants[0] ? product.variants[0] : {};
+      var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[0] ? store.bundlePriceOptions[0] : null;
+      var normalPrice = Number(variant.price || product.price || CHECKOUT_TEMPLATE_CONFIG.fallbackNormalPrice || 0);
+      var promoPrice = priceOption ? Number(priceOption.price || normalPrice) : Number(CHECKOUT_TEMPLATE_CONFIG.fallbackPromoPrice || normalPrice);
+      return {
+        product: product,
+        variant: variant,
+        priceOption: priceOption,
+        title: product.name || CHECKOUT_TEMPLATE_CONFIG.fallbackTitle,
+        description: product.description || CHECKOUT_TEMPLATE_CONFIG.fallbackDescription,
+        image: productImage(product),
+        normalPrice: normalPrice,
+        promoPrice: promoPrice
+      };
+    }
+
+    function orderBumpData() {
+      var product = store.products && store.products[1] ? store.products[1] : null;
+      var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[1] ? store.bundlePriceOptions[1] : null;
+      if (!product || !priceOption || !priceOption.uniqueId) return null;
+      var variant = product.variants && product.variants[0] ? product.variants[0] : {};
+      return {
+        product: product,
+        priceOption: priceOption,
+        title: product.name || CHECKOUT_TEMPLATE_CONFIG.orderBumpFallbackTitle,
+        description: product.description || CHECKOUT_TEMPLATE_CONFIG.orderBumpFallbackDescription,
+        image: productImage(product),
+        normalPrice: Number(variant.price || product.price || 0),
+        promoPrice: Number(priceOption.price || 0)
+      };
+    }
+
+    function orderBumpChecked() {
+      var checkbox = $("order-bump-check");
+      return !!(checkbox && checkbox.checked);
+    }
+
+    function checkoutItems() {
+      var main = getMainProductData();
+      var items = [];
+      if (main.priceOption && main.priceOption.uniqueId) {
+        items.push({ type: "bundle", bundlePriceOptionUniqueId: main.priceOption.uniqueId, quantity: 1 });
+      } else {
+        items.push({ type: "product", variantUniqueId: main.variant.uniqueId || main.product.uniqueId, quantity: 1 });
+      }
+      var bump = orderBumpData();
+      if (orderBumpChecked() && bump) {
+        items.push({ type: "bundle", bundlePriceOptionUniqueId: bump.priceOption.uniqueId, quantity: 1 });
+      }
+      return items;
+    }
+
+    function renderProduct() {
+      var main = getMainProductData();
+      var imageHtml = main.image ? '<img src="' + escapeHtml(main.image) + '" alt="Preview ' + escapeHtml(main.title) + '" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />' : '<span class="product-badge">Produk Digital</span><strong>' + escapeHtml(main.title) + '</strong>';
+      var hasPromo = main.normalPrice && main.promoPrice && main.normalPrice !== main.promoPrice;
+      $("product-content").innerHTML = '<div class="product-preview">' + imageHtml + '</div><div class="product-info"><h3>' + escapeHtml(main.title) + '</h3><p>' + escapeHtml(main.description) + '</p><div class="price-row">' + (hasPromo ? '<span class="normal-price">' + rupiah(main.normalPrice) + '</span>' : '') + '<span class="promo-price">' + rupiah(main.promoPrice) + '</span></div></div>';
+    }
+
+    function renderOrderBump() {
+      var bump = orderBumpData();
+      var element = $("order-bump");
+      if (!bump) { element.classList.remove("show"); element.innerHTML = ""; return; }
+      var hasPromo = bump.normalPrice && bump.promoPrice && bump.normalPrice !== bump.promoPrice;
+      var preview = bump.image ? '<img src="' + escapeHtml(bump.image) + '" alt="Preview ' + escapeHtml(bump.title) + '" style="width:100%; height:100%; object-fit:cover; border-radius:14px;" />' : '<span class="product-badge">Order Bump</span><strong>' + escapeHtml(bump.title) + '</strong>';
+      element.classList.add("show");
+      element.innerHTML = '<div class="bump-preview">' + preview + '</div><div><h3>' + escapeHtml(bump.title) + '</h3><p>' + escapeHtml(bump.description) + '</p><div class="price-row">' + (hasPromo ? '<span class="normal-price">' + rupiah(bump.normalPrice) + '</span>' : '') + '<span class="promo-price" style="font-size:1.35rem;">' + rupiah(bump.promoPrice) + '</span></div><label class="check-row"><input type="checkbox" id="order-bump-check" /> <span>Tambahkan produk digital ini ke pesanan</span></label></div>';
+      $("order-bump-check").addEventListener("change", renderSummary);
+    }
+
+    function renderPaymentMethods() {
+      var options = (store && store.paymentMethodOptions ? store.paymentMethodOptions.slice() : []);
+      var element = $("payment-content");
+      if (!options.length) {
+        element.innerHTML = '<div class="alert alert-error show">Metode pembayaran belum tersedia dari dashboard Scalev.</div>';
+        return;
+      }
+      if (CHECKOUT_TEMPLATE_CONFIG.qrisFirst) {
+        for (var i = 0; i < options.length; i++) {
+          if (String(options[i].value || options[i].display || "").toLowerCase().indexOf("qris") !== -1) {
+            options.unshift(options.splice(i, 1)[0]);
+            break;
+          }
+        }
+      }
+      element.innerHTML = '<div class="payment-grid">' + options.map(function (option, index) {
+        var label = option.display || option.name || option.value || "Pembayaran";
+        return '<div><input class="payment-option" type="radio" name="payment" value="' + escapeHtml(option.value) + '" id="pay-' + index + '" ' + (index === 0 ? 'checked' : '') + ' /><label class="payment-label" for="pay-' + index + '"><span class="payment-name">' + escapeHtml(label) + '</span><span class="payment-pill">Digital</span></label></div>';
+      }).join("") + '</div>';
+      document.querySelectorAll('input[name="payment"]').forEach(function (radio) { radio.addEventListener("change", renderSummary); });
+    }
+
+    function renderSummary() {
+      var main = getMainProductData();
+      var bump = orderBumpChecked() ? orderBumpData() : null;
+      var subtotal = main.promoPrice + (bump ? bump.promoPrice : 0);
+      var discountLabel = appliedDiscount ? escapeHtml(appliedDiscount.code || "Diskon") : "";
+      var html = '<div class="summary-row"><span>' + escapeHtml(main.title) + '</span><strong>' + rupiah(main.promoPrice) + '</strong></div>';
+      if (bump) html += '<div class="summary-row"><span>' + escapeHtml(bump.title) + '</span><strong>' + rupiah(bump.promoPrice) + '</strong></div>';
+      if (appliedDiscount) html += '<div class="summary-row"><span>' + discountLabel + '</span><strong>Dipakai</strong></div>';
+      html += '<div class="summary-row total"><span>Total</span><strong>' + rupiah(subtotal) + '</strong></div>';
+      $("summary-content").innerHTML = html;
+    }
+
+    function showAlert(id, type, message) {
+      var element = $(id);
+      element.className = "alert show alert-" + type;
+      element.textContent = message;
+    }
+
+    function hideAlert(id) {
+      var element = $(id);
+      element.className = "alert";
+      element.textContent = "";
+    }
+
+    function validateForm() {
+      var valid = true;
+      hideAlert("form-alert");
+      [["field-name", "cust-name"], ["field-phone", "cust-phone"], ["field-email", "cust-email"]].forEach(function (pair) {
+        var field = $(pair[0]);
+        var input = $(pair[1]);
+        field.classList.remove("is-error");
+        if (!input.value.trim() || (pair[1] === "cust-email" && input.value.indexOf("@") === -1)) {
+          field.classList.add("is-error");
+          valid = false;
+        }
+      });
+      if (!document.querySelector('input[name="payment"]:checked')) {
+        showAlert("form-alert", "error", "Pilih metode pembayaran dulu.");
+        valid = false;
+      }
+      if (!valid) {
+        var firstError = document.querySelector('.field.is-error .input');
+        if (firstError) firstError.focus();
+      }
+      return valid;
+    }
+
+    function publicOrderUrl(order) {
+      if (order.publicOrderUrl) return order.publicOrderUrl;
+      return new URL("/o/" + order.secretSlug, window.location.origin).toString();
+    }
+
+    function paymentInstructionUrl(order) {
+      if (order.status === "draft") return publicOrderUrl(order);
+      if (order.paymentUrl) return order.paymentUrl;
+      var url = new URL(publicOrderUrl(order));
+      url.pathname = url.pathname.replace(/\/$/, "") + "/success";
+      return url.toString();
+    }
+
+    function whatsappUrl(phone, order) {
+      var clean = String(phone || "").replace(/[^\d]/g, "");
+      var message = order.chatMessage || "Halo, saya sudah membuat pesanan " + (order.orderNumber || "") + ".";
+      return "https://wa.me/" + clean + "?text=" + encodeURIComponent(message);
+    }
+
+    function navigateAfterOrder(url) {
+      if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
+      window.location.assign(url);
+    }
+
+    function redirectAfterOrder(order) {
+      var type = afterCheckout.type || "success_page";
+      if (type === "direct_to_whatsapp" && order.handlerPhone) return navigateAfterOrder(whatsappUrl(order.handlerPhone, order));
+      if (type === "direct_to_custom_whatsapp" && afterCheckout.customWhatsappPhone) return navigateAfterOrder(whatsappUrl(afterCheckout.customWhatsappPhone, order));
+      if (type === "other_page" && afterCheckout.otherPagePath) return navigateAfterOrder(new URL(afterCheckout.otherPagePath, window.location.origin).toString());
+      if (type === "custom_url" && afterCheckout.customUrl) return navigateAfterOrder(afterCheckout.customUrl);
+      return navigateAfterOrder(paymentInstructionUrl(order));
+    }
+
+    $("discount-btn").addEventListener("click", function () {
+      var code = $("discount-code").value.trim();
+      if (!code) { showAlert("discount-msg", "error", "Masukkan kode diskon dulu."); return; }
+      if (!window.Scalev || !window.Scalev.checkout || typeof window.Scalev.checkout.validateDiscount !== "function") {
+        showAlert("discount-msg", "error", "Validasi diskon tidak tersedia di halaman ini.");
+        return;
+      }
+      showAlert("discount-msg", "info", "Memeriksa kode diskon…");
+      window.Scalev.checkout.validateDiscount({ discountCode: code }).then(function (result) {
+        appliedDiscount = { code: code, result: result };
+        showAlert("discount-msg", "success", "Kode diskon berhasil dipakai.");
+        renderSummary();
+      }).catch(function () {
+        appliedDiscount = null;
+        showAlert("discount-msg", "error", "Kode diskon tidak valid atau tidak bisa dipakai.");
+        renderSummary();
+      });
+    });
+
+    ["cust-name", "cust-phone", "cust-email"].forEach(function (id) {
+      $(id).addEventListener("input", function () {
+        $(id).closest(".field").classList.remove("is-error");
+      });
+    });
+
+    $("submit-btn").addEventListener("click", function () {
+      if (!validateForm()) return;
+      if (!window.Scalev || !window.Scalev.checkout || typeof window.Scalev.checkout.createOrder !== "function") {
+        showAlert("form-alert", "error", "Scalev checkout runtime tidak tersedia.");
+        return;
+      }
+      var payment = document.querySelector('input[name="payment"]:checked');
+      var payload = {
+        customer: {
+          name: $("cust-name").value.trim(),
+          phone: $("cust-phone").value.trim(),
+          email: $("cust-email").value.trim()
+        },
+        items: checkoutItems(),
+        paymentMethod: payment.value
+      };
+      if (appliedDiscount) payload.discountCode = appliedDiscount.code;
+      $("loading-overlay").classList.add("show");
+      $("submit-btn").disabled = true;
+      window.Scalev.checkout.createOrder(payload).then(function (order) {
+        redirectAfterOrder(order);
+      }).catch(function (error) {
+        $("loading-overlay").classList.remove("show");
+        $("submit-btn").disabled = false;
+        showAlert("form-alert", "error", error && error.message ? error.message : "Gagal membuat pesanan. Coba lagi.");
+      });
+    });
+
+    document.querySelector('[data-brand-name]').textContent = CHECKOUT_TEMPLATE_CONFIG.brandName;
+    renderProduct();
+    renderOrderBump();
+    renderPaymentMethods();
+    renderSummary();
+  </script>
+</body>
+</html>

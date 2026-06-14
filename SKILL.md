@@ -39,6 +39,8 @@ Use this skill for Scalev HTML Mode landing pages and checkout pages. Keep outpu
 Use bundled templates when user asks for a fresh page:
 
 - `assets/templates/checkout-digital.html` for digital checkout pages.
+- `assets/templates/landing-digital-template.html` for reusable digital product landing pages.
+- `assets/templates/checkout-digital-template.html` for reusable digital product checkout pages with bundle/order-bump support.
 
 Adapt copy, styling, and sections to user context, but keep Scalev runtime access, checkout payload, and redirect logic aligned with this skill.
 
