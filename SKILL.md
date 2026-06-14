@@ -18,17 +18,20 @@ Use this skill for Scalev HTML Mode landing pages and checkout pages. Keep outpu
 - Render payment methods from `store.paymentMethodOptions`, not hardcoded lists.
 - Sort QRIS first during render if requested.
 - Respect `Scalev.data.get().afterCheckout` for post-order redirect unless user explicitly asks for custom override.
+- For order bump, prefer dashboard-driven data: `store.products[1]` plus `store.bundlePriceOptions[1]`.
+- If order bump promo price is made through Scalev bundle pricing, submit bump as `type: "bundle"`, not `type: "product"`.
 
 ## Workflow
 
 1. Identify page type: landing page, checkout page, thank-you page, or debugging task.
 2. Read product model from Scalev data: product, variant, bundle price option, payment methods, and after-checkout setting.
 3. Choose correct checkout item payload.
-4. Build UI sections with simple mobile-first HTML/CSS/JS.
-5. Validate required inputs before `createOrder()`.
-6. Submit order through `Scalev.checkout.createOrder(payload)`.
-7. Redirect through Scalev after-checkout setting.
-8. Run syntax check on embedded JS when editing local HTML.
+4. If order bump exists, map it from the second product and second bundle price option.
+5. Build UI sections with simple mobile-first HTML/CSS/JS.
+6. Validate required inputs before `createOrder()`.
+7. Submit order through `Scalev.checkout.createOrder(payload)`.
+8. Redirect through Scalev after-checkout setting.
+9. Run syntax check on embedded JS when editing local HTML.
 
 ## Checkout Payload Patterns
 
@@ -53,6 +56,29 @@ items: [{
 ```
 
 Do not mix `type: "product"` with `bundlePriceOptionUniqueId`. Scalev can ignore bundle pricing and charge wrong amount.
+
+## Order Bump Pattern
+
+Use order bump on checkout page when user adds a second product in Scalev dashboard. Keep name, image, and prices dynamic.
+
+Expected mapping:
+
+- Main offer: `store.products[0]` and `store.bundlePriceOptions[0]`.
+- Order bump: `store.products[1]` and `store.bundlePriceOptions[1]`.
+
+Render bump only when both second product and second bundle price option exist. Hide the section otherwise.
+
+When checked, append bundle bump item:
+
+```js
+items.push({
+  type: "bundle",
+  bundlePriceOptionUniqueId: bump.priceOption.uniqueId,
+  quantity: 1
+});
+```
+
+Update client-side summary when checkbox changes. Total should equal main promo price plus bump promo price. Do not hardcode bump product name, image, normal price, or promo price.
 
 ## Redirect Pattern
 

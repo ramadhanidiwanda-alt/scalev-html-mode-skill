@@ -8,6 +8,7 @@ Codex skill for building and debugging Scalev HTML Mode landing pages and checko
 - Scalev checkout page structure
 - Digital product checkout
 - Bundle price option payloads
+- Dynamic order bump from second product and second bundle price option
 - QRIS/e-wallet payment methods
 - After-checkout redirects
 - Common Scalev HTML Mode bugs

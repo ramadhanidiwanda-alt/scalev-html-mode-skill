@@ -15,6 +15,11 @@ Fix: read `store.products[0].variants[0].price`.
 Cause: bundle promo submitted as `type: "product"` with `bundlePriceOptionUniqueId` attached.
 Fix: submit bundle as `type: "bundle"` and include only `bundlePriceOptionUniqueId` plus `quantity`.
 
+## Order bump charges normal price
+
+Cause: order bump product uses Scalev bundle pricing, but checkout submits it as `type: "product"` with `variantUniqueId`.
+Fix: when bump maps to `store.bundlePriceOptions[1]`, submit bump as `type: "bundle"` with `bundlePriceOptionUniqueId: store.bundlePriceOptions[1].uniqueId`.
+
 ## Summary does not appear after payment method selected
 
 Cause: `estimateSummary()` returns 400 because digital checkout lacks destination/shipping fields.

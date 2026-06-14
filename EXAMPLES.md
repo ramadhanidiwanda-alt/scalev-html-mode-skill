@@ -29,3 +29,9 @@ Use $scalev-html-mode to debug Scalev createOrder error: gross_revenue must be b
 ```text
 Use $scalev-html-mode to make checkout redirect follow Scalev dashboard after-checkout settings.
 ```
+
+## Add Order Bump
+
+```text
+Use $scalev-html-mode to add a dynamic order bump to a Scalev checkout page. The main product is products[0], the order bump is products[1], and both promo prices use bundlePriceOptions.
+```
