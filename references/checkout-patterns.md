@@ -85,3 +85,16 @@ items.push({
 ```
 
 Do not submit bundle-priced order bump as `type: "product"`. That can charge the wrong amount.
+
+### Mobile Layout
+
+On mobile, stack order bump image and copy vertically. Avoid side-by-side layout because it compresses the copy and hurts readability.
+
+```css
+@media (max-width: 480px) {
+  .order-bump-content { flex-direction: column; align-items: stretch; }
+  .order-bump-image { width: 100%; height: auto; max-height: none; object-fit: contain; }
+}
+```
+
+Do not set a small fixed image height on mobile. It can crop product mockups.

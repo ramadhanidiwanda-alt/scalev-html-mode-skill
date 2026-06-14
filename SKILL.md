@@ -20,6 +20,7 @@ Use this skill for Scalev HTML Mode landing pages and checkout pages. Keep outpu
 - Respect `Scalev.data.get().afterCheckout` for post-order redirect unless user explicitly asks for custom override.
 - For order bump, prefer dashboard-driven data: `store.products[1]` plus `store.bundlePriceOptions[1]`.
 - If order bump promo price is made through Scalev bundle pricing, submit bump as `type: "bundle"`, not `type: "product"`.
+- Scalev product images may be `images: ["https://..."]`; support string image arrays as well as object arrays.
 
 ## Workflow
 
@@ -67,6 +68,15 @@ Expected mapping:
 - Order bump: `store.products[1]` and `store.bundlePriceOptions[1]`.
 
 Render bump only when both second product and second bundle price option exist. Hide the section otherwise.
+
+For mobile order bump UI, stack image above copy. Do not keep image and copy side-by-side on small screens because text space becomes too narrow. Use natural image ratio to avoid cropping:
+
+```css
+@media (max-width: 480px) {
+  .order-bump-content { flex-direction: column; align-items: stretch; }
+  .order-bump-image { width: 100%; height: auto; max-height: none; object-fit: contain; }
+}
+```
 
 When checked, append bundle bump item:
 

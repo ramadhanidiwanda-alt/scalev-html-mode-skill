@@ -33,3 +33,13 @@ Fix: use `afterCheckout.type` from `Scalev.data.get()`.
 ## Cart endpoint 404 on payment page
 
 Observation: `https://api.scalev.com/v2/catalog/{host}/cart` can return `Store not found` on Scalev payment page. Do not call this endpoint from custom HTML. If it appears after successful order creation, treat as Scalev/payment-page behavior first, not checkout HTML payload error.
+
+## Order bump image does not show
+
+Cause: Scalev product image can be `images: ["https://..."]`, not only `images[0].url`.
+Fix: support `typeof product.images[0] === "string"` in image helper.
+
+## Order bump image cropped on mobile
+
+Cause: mobile CSS uses fixed height or small `max-height` with object-fit behavior.
+Fix: stack image above copy and use `width: 100%; height: auto; max-height: none; object-fit: contain;`.
