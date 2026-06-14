@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Checkout</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f8fafc; color: #0f172a; }
+    main { max-width: 720px; margin: 0 auto; padding: 24px 16px; }
+    .card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 20px; padding: 20px; box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08); }
+    .stack { display: grid; gap: 16px; }
+    label { display: grid; gap: 6px; font-weight: 700; }
+    input, select, button { width: 100%; border-radius: 12px; border: 1px solid #cbd5e1; padding: 12px 14px; font: inherit; }
+    button { border: 0; background: #2563eb; color: #ffffff; font-weight: 800; cursor: pointer; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+    .summary { display: flex; justify-content: space-between; gap: 16px; font-weight: 800; }
+    .muted { color: #64748b; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <form id="checkout" class="card stack">
+      <header class="stack">
+        <p class="muted">Checkout Digital</p>
+        <h1 id="productName">Produk</h1>
+        <p id="productDescription" class="muted"></p>
+      </header>
+
+      <label>Nama
+        <input id="name" name="name" autocomplete="name" required>
+      </label>
+      <label>WhatsApp
+        <input id="phone" name="phone" autocomplete="tel" required>
+      </label>
+      <label>Email
+        <input id="email" name="email" type="email" autocomplete="email" required>
+      </label>
+      <label>Metode pembayaran
+        <select id="paymentMethod" name="paymentMethod" required></select>
+      </label>
+
+      <div class="summary">
+        <span>Total</span>
+        <span id="total">Rp0</span>
+      </div>
+
+      <button id="submit" type="submit">Buat Pesanan</button>
+      <p id="message" class="muted" role="status"></p>
+    </form>
+  </main>
+
+  <script>
+    var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
+    var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
+    var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
+
+    function rupiah(value) {
+      return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
+    }
+
+    function checkoutItems() {
+      var product = store.products[0] || {};
+      var variant = product.variants && product.variants[0] ? product.variants[0] : {};
+      var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[0] ? store.bundlePriceOptions[0] : null;
+
+      if (priceOption && priceOption.uniqueId) {
+        return [{ type: "bundle", bundlePriceOptionUniqueId: priceOption.uniqueId, quantity: 1 }];
+      }
+
+      return [{ type: "product", variantUniqueId: variant.uniqueId || product.uniqueId, quantity: 1 }];
+    }
+
+    function publicOrderUrl(order) {
+      if (order.publicOrderUrl) return order.publicOrderUrl;
+      return new URL("/o/" + order.secretSlug, window.location.origin).toString();
+    }
+
+    function paymentInstructionUrl(order) {
+      if (order.status === "draft") return publicOrderUrl(order);
+      if (order.paymentUrl) return order.paymentUrl;
+      var url = new URL(publicOrderUrl(order));
+      url.pathname = url.pathname.replace(/\/$/, "") + "/success";
+      return url.toString();
+    }
+
+    function redirectUrl(order) {
+      if (afterCheckout.type === "custom_url" && afterCheckout.customUrl) return afterCheckout.customUrl;
+      if (afterCheckout.type === "other_page" && afterCheckout.otherPagePath) return new URL(afterCheckout.otherPagePath, window.location.origin).toString();
+      return paymentInstructionUrl(order);
+    }
+
+    function navigate(url) {
+      if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
+      window.location.assign(url);
+    }
+
+    var product = store.products[0] || {};
+    var variant = product.variants && product.variants[0] ? product.variants[0] : {};
+    var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[0] ? store.bundlePriceOptions[0] : null;
+    var finalPrice = priceOption ? Number(priceOption.price || 0) : Number(variant.price || 0);
+
+    document.getElementById("productName").textContent = product.name || "Produk Digital";
+    document.getElementById("productDescription").textContent = product.description || "Isi data untuk membuat pesanan.";
+    document.getElementById("total").textContent = rupiah(finalPrice);
+
+    var paymentSelect = document.getElementById("paymentMethod");
+    (store.paymentMethodOptions || []).forEach(function(option) {
+      var element = document.createElement("option");
+      element.value = option.value;
+      element.textContent = option.display || option.value;
+      paymentSelect.appendChild(element);
+    });
+
+    document.getElementById("checkout").addEventListener("submit", function(event) {
+      event.preventDefault();
+      var submit = document.getElementById("submit");
+      var message = document.getElementById("message");
+      submit.disabled = true;
+      message.textContent = "Membuat pesanan...";
+
+      var payload = {
+        customer: {
+          name: document.getElementById("name").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          email: document.getElementById("email").value.trim()
+        },
+        items: checkoutItems(),
+        paymentMethod: paymentSelect.value
+      };
+
+      window.Scalev.checkout.createOrder(payload).then(function(order) {
+        navigate(redirectUrl(order));
+      }).catch(function(error) {
+        message.textContent = error && error.message ? error.message : "Gagal membuat pesanan.";
+        submit.disabled = false;
+      });
+    });
+  </script>
+</body>
+</html>

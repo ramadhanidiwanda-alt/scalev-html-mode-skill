@@ -18,7 +18,7 @@ Codex skill for building and debugging Scalev HTML Mode landing pages and checko
 Copy or symlink this folder into your Codex skills directory:
 
 ```bash
-ln -s /Users/macbook/Projects/scalev-html-mode-skill ~/.codex/skills/scalev-html-mode
+ln -s "$PWD" ~/.codex/skills/scalev-html-mode
 ```
 
 Then trigger with:
@@ -31,6 +31,13 @@ Use $scalev-html-mode to create a Scalev checkout page.
 
 ```text
 scalev-html-mode-skill/
+├── agents/
+│   └── openai.yaml
+├── assets/
+│   └── templates/
+│       └── checkout-digital.html
+├── scripts/
+│   └── check-html-js.mjs
 ├── SKILL.md
 ├── README.md
 └── references/
@@ -40,6 +47,16 @@ scalev-html-mode-skill/
     ├── landing-patterns.md
     └── runtime-data.md
 ```
+
+## Validate HTML
+
+Check inline JavaScript syntax in generated or edited HTML:
+
+```bash
+node scripts/check-html-js.mjs path/to/page.html
+```
+
+This catches JavaScript syntax errors inside inline `<script>` blocks. It does not emulate the Scalev runtime.
 
 ## Example Prompts
 

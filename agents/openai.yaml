@@ -1,0 +1,8 @@
+interface:
+  display_name: "Scalev HTML Mode"
+  short_description: "Build and debug Scalev HTML checkout pages"
+  brand_color: "#2563EB"
+  default_prompt: "Use $scalev-html-mode to create a mobile-first Scalev checkout page for a digital product."
+
+policy:
+  allow_implicit_invocation: true

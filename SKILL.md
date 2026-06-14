@@ -32,7 +32,15 @@ Use this skill for Scalev HTML Mode landing pages and checkout pages. Keep outpu
 6. Validate required inputs before `createOrder()`.
 7. Submit order through `Scalev.checkout.createOrder(payload)`.
 8. Redirect through Scalev after-checkout setting.
-9. Run syntax check on embedded JS when editing local HTML.
+9. Run `node scripts/check-html-js.mjs <file.html>` when editing local HTML.
+
+## Starter Templates
+
+Use bundled templates when user asks for a fresh page:
+
+- `assets/templates/checkout-digital.html` for digital checkout pages.
+
+Adapt copy, styling, and sections to user context, but keep Scalev runtime access, checkout payload, and redirect logic aligned with this skill.
 
 ## Checkout Payload Patterns
 
@@ -108,3 +116,13 @@ Load only needed references:
 - `references/after-checkout.md` for redirect behavior.
 - `references/landing-patterns.md` for landing page structure.
 - `references/common-bugs.md` for known bugs and fixes.
+
+## Validation
+
+Run this syntax check after changing generated or local HTML with inline scripts:
+
+```bash
+node scripts/check-html-js.mjs path/to/page.html
+```
+
+This checks inline `<script>` blocks for JavaScript syntax errors. It does not verify Scalev runtime data, payment behavior, or dashboard configuration.
