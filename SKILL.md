@@ -111,15 +111,17 @@ Update client-side summary when checkbox changes. Total should equal main promo 
 
 ## Pixel / Analytics
 
-- Scalev injects Meta Pixel and other analytics scripts server-side. Custom HTML must give these scripts time to fire before redirecting.
-- Always add a configurable delay before `navigateAfterOrder` / `navigate` to allow Scalev-injected pixel events to complete.
-- Use `pixelDelayMs` config (default 600ms) in checkout templates. Do not hardcode pixel IDs or event names.
+- Scalev injects Meta Pixel and analytics scripts server-side. Custom HTML must give these scripts time to fire before redirecting.
+- Always add configurable delay before `navigateAfterOrder` / `navigate` to allow pixel events to complete.
+- Use `pixelDelayMs` config (default 600ms) in checkout templates.
 - Pattern: `setTimeout(function() { window.location.assign(url); }, pixelDelayMs);`
 - For iframe: `setTimeout(function() { window.parent.postMessage(url, "*"); }, pixelDelayMs);`
-- Do not skip this delay — missing delay causes Meta Pixel events (PageView, Purchase, etc.) to not fire before page unload.
-- Event page-load (PageView, ATC, dll) jangan di-hardcode. Baca dari Scalev page config: `scalev.page.events` atau `scalev.page.analyticsEvents`. Gunakan `firePageEvents()`.
-- Kalau Scalev tidak kirim page event config, jangan fallback ke hardcode — biarkan kosong. Scalev handle otomatis sesuai pengaturan dashboard.
-- Hanya event dinamis (seperti Purchase dengan `orderId`) yang boleh dipanggil manual lewat `track()`.
+- `Scalev.data.get()` currently does not expose dashboard page-event settings. Do not assume `page.events`, `analyticsEvents`, or similar fields exist.
+- If user explicitly asks for a specific Meta Pixel ID and event (example: page open = `AddToCart`), hardcode only that requested event + pixel ID in custom HTML.
+- For explicit Meta Pixel events, prefer `fbq("trackSingle", pixelId, eventName, params)` so event targets that exact Pixel ID without re-initializing Scalev pixel base code.
+- Do not call `fbq("init", pixelId)` again when Scalev already provides `fbq`; re-init can conflict and stop events.
+- Do not manually trigger `PageView` unless user explicitly requests it. Scalev/Meta base script may already emit PageView.
+- `Scalev.analytics.track(provider, payload)` must use official camelCase payload: `events: [{ eventName, parameters }]`. Do not send top-level `event` or snake_case `event_name`.
 
 ## References
 

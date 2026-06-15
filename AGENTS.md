@@ -113,13 +113,16 @@ Scalev HTML Mode Skill — skill project untuk Codex agent yang membangun, debug
 
 ## 5. Pixel / Analytics Rules
 
-- Scalev inject Meta Pixel dan analytics script server-side — custom HTML **tidak boleh** hardcode pixel ID atau event
+- Scalev inject Meta Pixel dan analytics script server-side. Custom HTML harus beri waktu event fire sebelum redirect
 - Setiap redirect setelah `createOrder()` **wajib** pakai delay (`pixelDelayMs`, default 600ms) via `setTimeout`
 - Tanpa delay, Meta Pixel event (PageView, Purchase, dll) tidak sempat fire sebelum halaman pindah
 - Delay berlaku untuk SEMUA redirect type: `success_page`, `direct_to_whatsapp`, `custom_url`, dll
-- Lihat `references/common-bugs.md` section "Meta Pixel tidak membaca event" untuk detail
-- Event page-load (PageView, ATC, dll) jangan di-hardcode. Baca dari Scalev: `scalev.page.events` / `scalev.page.analyticsEvents` lewat `firePageEvents()`
-- Kalau tidak ada config dari Scalev, jangan fallback ke hardcode — biarkan Scalev handle otomatis
+- `Scalev.data.get()` saat ini tidak expose pengaturan event halaman dari dashboard. Jangan asumsi ada `page.events`, `analyticsEvents`, atau field sejenis
+- Kalau user eksplisit minta Pixel ID dan event tertentu (contoh: page open = `AddToCart`), boleh hardcode event + Pixel ID itu di custom HTML
+- Untuk event Meta Pixel eksplisit, pakai `fbq("trackSingle", pixelId, eventName, params)` agar event masuk ke Pixel ID target tanpa init ulang base pixel Scalev
+- Jangan panggil ulang `fbq("init", pixelId)` kalau Scalev sudah menyediakan `fbq`; re-init bisa bentrok dan event hilang
+- Jangan trigger `PageView` manual kecuali user eksplisit minta. Scalev/Meta base script bisa sudah mengirim PageView
+- `Scalev.analytics.track(provider, payload)` wajib pakai format resmi: `events: [{ eventName, parameters }]` dengan camelCase. Jangan kirim top-level `event` atau snake_case `event_name`
 
 ---
 

@@ -54,7 +54,27 @@ Fix: tambahkan `pixelDelayMs` (default 600ms) sebelum redirect. Gunakan `setTime
 Cause: sama seperti di atas — redirect terlalu cepat.
 Fix: pastikan `navigateAfterOrder` pakai `setTimeout` dengan `pixelDelayMs`. Delay berlaku untuk semua redirect type: `success_page`, `direct_to_whatsapp`, `custom_url`, dll.
 
-## Page-load event tidak sesuai pengaturan Scalev
+## Page-load event tidak sesuai kebutuhan user
 
-Cause: event page-load di-hardcode (misal `track("facebook", "PageView")`), bukan baca dari konfigurasi halaman Scalev.
-Fix: gunakan `firePageEvents()` yang baca dari `scalev.page.events` atau `scalev.page.analyticsEvents`. Jangan hardcode provider atau event name. Kalau Scalev tidak kirim config, biarkan kosong — jangan fallback ke hardcode.
+Cause: custom HTML menembak event default seperti `PageView`, atau mencoba membaca pengaturan dashboard dari `Scalev.data.get()` padahal runtime tidak mengekspos setting event halaman.
+Fix: jika user eksplisit memberi Pixel ID dan event (misal `AddToCart` saat halaman terbuka), tembak event tersebut langsung dengan `fbq("trackSingle", pixelId, eventName, params)`. Jangan trigger `PageView` manual kecuali diminta.
+
+## Scalev.analytics.track tidak mengirim event dashboard
+
+Cause: payload analytics salah, misalnya `{ event: "AddToCart" }`. Dokumentasi resmi Scalev mensyaratkan payload camelCase dengan `events: [{ eventName, parameters }]`.
+Fix: panggil `Scalev.analytics.track(provider, { variants, bundlePriceOptions, events: [{ eventName: eventName, parameters: { value, currency: "IDR" } }] })`. Jangan gunakan top-level `event` / `event_name`.
+
+## Page-load analytics silent fail
+
+Cause: `track()` memakai helper DOM seperti `$()` sebelum helper tersebut didefinisikan. Karena error dibungkus `try/catch`, event gagal tanpa pesan error.
+Fix: di fungsi analytics yang bisa dipanggil saat init awal, gunakan `document.getElementById(...)` langsung atau definisikan `$` sebelum fungsi analytics dipanggil.
+
+## Dashboard event tidak bisa diikuti dari HTML runtime
+
+Observation: `Scalev.data.get()` may only expose `page`, `store`, and `afterCheckout`. It does not necessarily expose dashboard page-event settings.
+Fix: if the user explicitly asks for a specific Meta Pixel ID and event, hardcode that event in HTML with `fbq("trackSingle", pixelId, eventName, params)`. Do not call `fbq("init", pixelId)` again if Scalev already injects `fbq`.
+
+## Meta Pixel event hilang setelah fbq init ulang
+
+Cause: custom HTML calls `fbq("init", pixelId)` even though Scalev already injected Meta Pixel base code. Re-initializing can conflict with Scalev's pixel setup.
+Fix: when `window.fbq` already exists, do not init again. Send explicit events with `fbq("trackSingle", pixelId, eventName, params)`.
