@@ -78,3 +78,26 @@ Fix: if the user explicitly asks for a specific Meta Pixel ID and event, hardcod
 
 Cause: custom HTML calls `fbq("init", pixelId)` even though Scalev already injected Meta Pixel base code. Re-initializing can conflict with Scalev's pixel setup.
 Fix: when `window.fbq` already exists, do not init again. Send explicit events with `fbq("trackSingle", pixelId, eventName, params)`.
+
+## Page-load Meta Pixel event tidak muncul (fbq belum siap)
+
+Cause: Scalev inject `fbq` secara async (server-side). Custom HTML `<script>` bisa jalan duluan sebelum `window.fbq` tersedia. Guard `typeof window.fbq !== "function"` langsung return tanpa retry → event drop.
+Fix: gunakan polling/retry untuk page-load event. Contoh:
+```js
+function ensurePixelAndTrack(eventName, params, attempt) {
+  attempt = attempt || 0;
+  if (typeof window.fbq === "function") {
+    window.fbq("trackSingle", pixelId, eventName, params);
+    return;
+  }
+  if (attempt < 20) {
+    setTimeout(function () { ensurePixelAndTrack(eventName, params, attempt + 1); }, 250);
+  }
+}
+```
+Event setelah interaksi user (submit, klik) tidak perlu retry karena `fbq` pasti sudah siap.
+
+## Server relay Scalev analytics tidak diperlukan
+
+Observation: custom HTML mengirim event ke `https://api.scalev.com/v3/stores/{store_id}/public/analytics/meta/events` bersamaan dengan browser Pixel. Ini bisa bikin event dobel di Meta Ads Manager kalau dedup tidak sempurna, dan menambah kompleksitas tanpa manfaat jelas.
+Fix: andalkan browser Pixel (`fbq("trackSingle", ...)`) saja. Hapus `fetch()` ke endpoint analytics Scalev, `eventIdFor()`, dan `cookieValue()` untuk fbp/fbc dari custom HTML.

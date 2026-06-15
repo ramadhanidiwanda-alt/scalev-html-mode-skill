@@ -55,6 +55,8 @@
     var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
     var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
     var pixelDelayMs = 600;
+    var metaPixelId = "";
+    var trackAddToCartOnLoad = false;
 
     function rupiah(value) {
       return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
@@ -108,6 +110,28 @@
     document.getElementById("productDescription").textContent = product.description || "Isi data untuk membuat pesanan.";
     document.getElementById("total").textContent = rupiah(finalPrice);
 
+    function addToCartParams() {
+      var contentId = variant.uniqueId || product.uniqueId || priceOption && priceOption.uniqueId || "";
+      return {
+        content_name: product.name || "Produk Digital",
+        content_ids: contentId ? [contentId] : [],
+        content_type: priceOption ? "product_group" : "product",
+        value: finalPrice,
+        currency: "IDR"
+      };
+    }
+
+    function trackAddToCart(attempt) {
+      if (!trackAddToCartOnLoad || !metaPixelId) return;
+      if (typeof window.fbq === "function") {
+        window.fbq("trackSingle", metaPixelId, "AddToCart", addToCartParams());
+        return;
+      }
+      if ((attempt || 0) < 20) {
+        setTimeout(function() { trackAddToCart((attempt || 0) + 1); }, 250);
+      }
+    }
+
     var paymentSelect = document.getElementById("paymentMethod");
     (store.paymentMethodOptions || []).forEach(function(option) {
       var element = document.createElement("option");
@@ -140,6 +164,8 @@
         submit.disabled = false;
       });
     });
+
+    trackAddToCart(0);
   </script>
 </body>
 </html>

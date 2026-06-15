@@ -194,7 +194,9 @@
       orderBumpFallbackTitle: "30 Hook Konten Viral",
       orderBumpFallbackDescription: "Tambahan hook siap pakai untuk Reels, TikTok, dan caption promo.",
       qrisFirst: true,
-      pixelDelayMs: 600
+      pixelDelayMs: 600,
+      metaPixelId: "",
+      trackAddToCartOnLoad: false
     };
 
     var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
@@ -333,6 +335,30 @@
       $("summary-content").innerHTML = html;
     }
 
+    function addToCartParams() {
+      var main = getMainProductData();
+      var contentId = main.variant.uniqueId || main.product.uniqueId || main.priceOption && main.priceOption.uniqueId || "";
+      return {
+        content_name: main.title,
+        content_ids: contentId ? [contentId] : [],
+        content_type: main.priceOption ? "product_group" : "product",
+        value: main.promoPrice,
+        currency: "IDR"
+      };
+    }
+
+    function trackAddToCart(attempt) {
+      var pixelId = CHECKOUT_TEMPLATE_CONFIG.metaPixelId;
+      if (!CHECKOUT_TEMPLATE_CONFIG.trackAddToCartOnLoad || !pixelId) return;
+      if (typeof window.fbq === "function") {
+        window.fbq("trackSingle", pixelId, "AddToCart", addToCartParams());
+        return;
+      }
+      if ((attempt || 0) < 20) {
+        setTimeout(function () { trackAddToCart((attempt || 0) + 1); }, 250);
+      }
+    }
+
     function showAlert(id, type, message) {
       var element = $(id);
       element.className = "alert show alert-" + type;
@@ -463,6 +489,7 @@
     renderOrderBump();
     renderPaymentMethods();
     renderSummary();
+    trackAddToCart(0);
   </script>
 </body>
 </html>
