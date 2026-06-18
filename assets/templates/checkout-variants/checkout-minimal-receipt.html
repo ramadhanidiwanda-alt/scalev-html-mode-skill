@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout Digital Minimal Receipt</title>
+  <meta name="description" content="Template checkout digital minimal dengan struktur seperti receipt/invoice sederhana." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Checkout Digital Minimal Receipt" />
+  <meta property="og:description" content="Template checkout digital minimal dengan struktur seperti receipt/invoice sederhana." />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Checkout Digital Minimal Receipt" />
+  <meta name="twitter:description" content="Template checkout digital minimal dengan struktur seperti receipt/invoice sederhana." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Source+Sans+3:wght@400;500;600;700;800&display=swap');
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #fafaf9; --surface: #ffffff; --soft: #f5f5f4; --text: #1c1917; --muted: #78716c; --primary: #0f766e; --accent: #ca8a04; --border: #e7e5e4; --danger: #dc2626; --success: #15803d;
+      --heading: 'Outfit', system-ui, sans-serif; --body: 'Source Sans 3', system-ui, sans-serif;
+      --radius-lg: 18px; --radius-md: 12px; --shadow: 0 22px 70px rgba(15,23,42,.10);
+    }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-height: 100vh; font-family: var(--body); color: var(--text); background: var(--bg); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .65; background: radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--primary) 24%, transparent), transparent 34%), radial-gradient(circle at 90% 14%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 30%); z-index: -1; }
+    img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    a { color: inherit; }
+    .skip-link { position: absolute; top: -80px; left: 16px; background: var(--text); color: var(--surface); padding: 12px 16px; border-radius: 999px; z-index: 20; }
+    .skip-link:focus { top: 16px; }
+    .shell { width: min(100% - 28px, 860px); margin: 0 auto; padding: 22px 0 48px; }
+    .topbar { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-bottom: 24px; }
+    .brand { font-family: var(--heading); font-weight: 900; letter-spacing: -.03em; }
+    .secure-note { color: var(--muted); font-size: .92rem; }
+    .hero { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: clamp(24px, 5vw, 44px); background: color-mix(in srgb, var(--surface) 90%, transparent); box-shadow: var(--shadow); margin-bottom: 18px; }
+    .eyebrow, .kicker { color: var(--primary); font-weight: 900; font-size: .82rem; text-transform: uppercase; letter-spacing: .08em; }
+    h1, h2, h3 { margin: 0; font-family: var(--heading); letter-spacing: -.035em; line-height: 1.08; }
+    h1 { font-size: clamp(2rem, 6vw, 4.6rem); max-width: 12ch; margin: 10px 0 16px; }
+    .hero p { max-width: 62ch; margin: 0; color: var(--muted); font-size: 1.05rem; }
+    .layout { display: grid; gap: 18px; grid-template-columns: 1fr; }
+    .panel { border: 1px solid var(--border); border-radius: var(--radius-lg); background: color-mix(in srgb, var(--surface) 94%, transparent); box-shadow: var(--shadow); padding: clamp(20px, 4vw, 30px); }
+    .product-card { display: grid; grid-template-columns: 96px 1fr; gap: 18px; align-items: center; }
+    .product-card h2 { font-size: clamp(1.25rem, 3vw, 2rem); margin: 4px 0 8px; }
+    .product-card p { margin: 0; color: var(--muted); }
+    .product-media, .bump-media { aspect-ratio: 1; border-radius: var(--radius-md); overflow: hidden; background: linear-gradient(135deg, var(--soft), color-mix(in srgb, var(--primary) 20%, var(--surface))); border: 1px solid var(--border); }
+    .product-placeholder, .bump-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, var(--primary), var(--accent)); opacity: .88; }
+    .price-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: baseline; margin-top: 12px; }
+    .price-normal { color: var(--muted); text-decoration: line-through; }
+    .price-final { color: var(--primary); font-family: var(--heading); font-size: 1.3rem; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+    .section-title h2 { font-size: 1.15rem; }
+    .form-grid { display: grid; gap: 14px; }
+    .field { display: grid; gap: 7px; }
+    label { font-weight: 800; }
+    input[type="text"], input[type="tel"], input[type="email"] { min-height: 48px; border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; font: inherit; color: var(--text); background: var(--surface); }
+    input:focus-visible { outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent); border-color: var(--primary); }
+    input[aria-invalid="true"] { border-color: var(--danger); }
+    .field-error { min-height: 18px; color: var(--danger); font-size: .85rem; }
+    .payment-list { display: grid; gap: 10px; }
+    .pay-option { min-height: 52px; display: flex; gap: 10px; align-items: center; border: 1px solid var(--border); border-radius: 16px; padding: 12px 14px; background: var(--surface); cursor: pointer; }
+    .pay-option:has(input:checked) { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
+    .bump-label { display: block; cursor: pointer; }
+    .bump-label input { position: absolute; opacity: 0; }
+    .bump-content { display: grid; grid-template-columns: 96px 1fr; gap: 14px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--soft); padding: 14px; }
+    .bump-label:has(input:checked) .bump-content { border-color: var(--accent); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--accent) 72%, transparent); }
+    .bump-copy { display: grid; gap: 4px; }
+    .bump-copy small { color: var(--muted); }
+    .summary-box { display: grid; gap: 10px; }
+    .summary-row { display: flex; justify-content: space-between; gap: 16px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
+    .summary-total { border: 0; padding: 12px 0 0; font-size: 1.2rem; }
+    .discount-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+    .btn { min-height: 50px; border: 0; border-radius: 999px; padding: 13px 20px; font: inherit; font-weight: 900; cursor: pointer; transition: transform .2s ease, opacity .2s ease, box-shadow .2s ease; }
+    .btn-primary { width: 100%; color: #fff; background: var(--primary); box-shadow: var(--shadow); }
+    .btn-secondary { color: var(--text); background: var(--soft); border: 1px solid var(--border); }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+    .alert { border-radius: 14px; padding: 12px 14px; margin: 14px 0; }
+    .alert[hidden] { display: none; }
+    .alert-error { background: color-mix(in srgb, var(--danger) 12%, var(--surface)); color: var(--danger); border: 1px solid color-mix(in srgb, var(--danger) 35%, var(--border)); }
+    .alert-success { background: color-mix(in srgb, var(--success) 12%, var(--surface)); color: var(--success); border: 1px solid color-mix(in srgb, var(--success) 35%, var(--border)); }
+    .sticky-checkout { display: none; justify-content: space-between; align-items: center; gap: 16px; padding: 14px 18px max(14px, env(safe-area-inset-bottom)); background: var(--surface); border-top: 1px solid var(--border); box-shadow: 0 -14px 40px rgba(15,23,42,.12); }
+    .sticky-checkout strong { font-family: var(--heading); color: var(--primary); }
+    .sticky-checkout .btn { width: auto; min-width: 150px; }
+    footer { color: var(--muted); padding: 22px 0 0; font-size: .9rem; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .hero h1 { max-width: none; } }
+    @media (max-width: 520px) { .shell { width: min(100% - 20px, 1160px); } .topbar { align-items: flex-start; } .secure-note { max-width: 16ch; text-align: right; } .product-card, .bump-content { grid-template-columns: 1fr; } .product-media, .bump-media { aspect-ratio: 16 / 10; } .discount-row { grid-template-columns: 1fr; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; } }
+  </style>
+</head>
+<body class="checkout-receipt">
+  <a class="skip-link" href="#checkout-form">Lewati ke form checkout</a>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">Minimal Receipt Checkout</div>
+      <div class="secure-note">Digital checkout • Scalev runtime</div>
+    </header>
+    <section class="hero" aria-labelledby="page-title">
+      <span class="eyebrow">Receipt checkout</span>
+      <h1 id="page-title">Checkout sederhana seperti nota pesanan digital.</h1>
+      <p>Cocok untuk produk murah, template, ebook, atau bundle yang butuh checkout cepat dan minim dekorasi.</p>
+    </section>
+    <div class="layout">
+      <aside class="panel stack-left" aria-label="Ringkasan produk dan pesanan">
+        <section id="product-card" class="product-card" aria-live="polite"></section>
+        <section id="order-bump" class="panel-lite" aria-label="Order bump"></section>
+        <section class="panel-lite" aria-labelledby="summary-title">
+          <div class="section-title"><h2 id="summary-title">Ringkasan</h2><span class="kicker">Total</span></div>
+          <div id="summary-box" class="summary-box" aria-live="polite"></div>
+        </section>
+      </aside>
+      <section class="panel" id="checkout-form" aria-labelledby="form-title">
+        <div class="section-title"><h2 id="form-title">Data pembeli</h2><span class="kicker">3 langkah</span></div>
+        <div class="form-grid">
+          <div class="field"><label for="buyer-name">Nama lengkap</label><input id="buyer-name" type="text" autocomplete="name" placeholder="Nama pembeli" /><span class="field-error" data-error-for="buyer-name"></span></div>
+          <div class="field"><label for="buyer-phone">Nomor WhatsApp</label><input id="buyer-phone" type="tel" autocomplete="tel" placeholder="0812xxxxxxxx" /><span class="field-error" data-error-for="buyer-phone"></span></div>
+          <div class="field"><label for="buyer-email">Email akses produk</label><input id="buyer-email" type="email" autocomplete="email" placeholder="nama@email.com" /><span class="field-error" data-error-for="buyer-email"></span></div>
+        </div>
+        <div class="section-title" style="margin-top:22px;"><h2>Metode pembayaran</h2></div>
+        <div id="payment-methods" class="payment-list"></div>
+        <div class="section-title" style="margin-top:22px;"><h2>Kode diskon</h2><span class="kicker">Opsional</span></div>
+        <div class="discount-row"><input id="discount-code" type="text" placeholder="Masukkan kode" /><button class="btn btn-secondary" type="button" id="discount-btn">Pakai</button></div>
+        <div id="form-message" class="alert" hidden role="alert"></div>
+        <button class="btn btn-primary" type="button" id="submit-btn">Buat Pesanan</button>
+      </section>
+    </div>
+    <footer>Template ini membaca produk, bundle price option, payment methods, order bump, dan afterCheckout dari <code>Scalev.data.get()</code>. Ganti copy statis sebelum import.</footer>
+  </main>
+  <div class="sticky-checkout"><span>Total <strong id="sticky-total">Rp0</strong></span><a class="btn btn-primary" href="#checkout-form">Checkout</a></div>
+  <script>
+    (function () {
+      "use strict";
+
+      var CHECKOUT_STYLE = {
+        fallbackTitle: "Produk Digital",
+        fallbackDescription: "Produk digital siap akses setelah pembayaran berhasil.",
+        fallbackNormalPrice: 0,
+        fallbackPromoPrice: 0,
+        orderBumpFallbackTitle: "Produk Tambahan",
+        orderBumpFallbackDescription: "Tambahkan produk digital ini ke pesanan.",
+        qrisFirst: true,
+        pixelDelayMs: 600
+      };
+
+      var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
+      var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
+      var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
+      var appliedDiscount = null;
+
+      function $(id) { return document.getElementById(id); }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>"]/g, function (char) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[char];
+        });
+      }
+
+      function rupiah(value) {
+        return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
+      }
+
+      function setMeta(selector, value) {
+        var element = document.querySelector(selector);
+        if (element && value) element.setAttribute("content", value);
+      }
+
+      function productImage(product) {
+        if (!product) return "";
+        if (product.imageUrl) return product.imageUrl;
+        if (product.thumbnailUrl) return product.thumbnailUrl;
+        if (product.image) return product.image;
+        if (product.coverImageUrl) return product.coverImageUrl;
+        if (product.images && product.images.length) {
+          if (typeof product.images[0] === "string") return product.images[0];
+          return product.images[0].url || product.images[0].imageUrl || product.images[0].src || "";
+        }
+        return "";
+      }
+
+      function mainProductData() {
+        var product = store.products && store.products[0] ? store.products[0] : {};
+        var variant = product.variants && product.variants[0] ? product.variants[0] : {};
+        var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[0] ? store.bundlePriceOptions[0] : null;
+        var normalPrice = Number(variant.price || CHECKOUT_STYLE.fallbackNormalPrice || 0);
+        var promoPrice = priceOption ? Number(priceOption.price || normalPrice) : Number(CHECKOUT_STYLE.fallbackPromoPrice || normalPrice);
+        return {
+          product: product,
+          variant: variant,
+          priceOption: priceOption,
+          title: product.name || product.publicName || CHECKOUT_STYLE.fallbackTitle,
+          description: product.description || CHECKOUT_STYLE.fallbackDescription,
+          image: productImage(product),
+          normalPrice: normalPrice,
+          promoPrice: promoPrice
+        };
+      }
+
+      function orderBumpData() {
+        var product = store.products && store.products[1] ? store.products[1] : null;
+        var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[1] ? store.bundlePriceOptions[1] : null;
+        if (!product || !priceOption || !priceOption.uniqueId) return null;
+        var variant = product.variants && product.variants[0] ? product.variants[0] : {};
+        return {
+          product: product,
+          priceOption: priceOption,
+          title: product.name || product.publicName || CHECKOUT_STYLE.orderBumpFallbackTitle,
+          description: product.description || CHECKOUT_STYLE.orderBumpFallbackDescription,
+          image: productImage(product),
+          normalPrice: Number(variant.price || 0),
+          promoPrice: Number(priceOption.price || 0)
+        };
+      }
+
+      function orderBumpChecked() {
+        var checkbox = $("order-bump-check");
+        return !!(checkbox && checkbox.checked);
+      }
+
+      function checkoutItems() {
+        var main = mainProductData();
+        var items = [];
+        if (main.priceOption && main.priceOption.uniqueId) {
+          items.push({ type: "bundle", bundlePriceOptionUniqueId: main.priceOption.uniqueId, quantity: 1 });
+        } else {
+          items.push({ type: "product", variantUniqueId: main.variant.uniqueId || main.product.uniqueId, quantity: 1 });
+        }
+        var bump = orderBumpData();
+        if (orderBumpChecked() && bump) {
+          items.push({ type: "bundle", bundlePriceOptionUniqueId: bump.priceOption.uniqueId, quantity: 1 });
+        }
+        return items;
+      }
+
+      function renderSeo(main) {
+        var title = "Checkout " + (main.title || "Produk Digital");
+        var description = "Selesaikan pembelian " + (main.title || "produk digital") + " melalui metode pembayaran yang tersedia.";
+        document.title = title;
+        setMeta('meta[name="description"]', description);
+        setMeta('meta[property="og:title"]', title);
+        setMeta('meta[property="og:description"]', description);
+        setMeta('meta[name="twitter:title"]', title);
+        setMeta('meta[name="twitter:description"]', description);
+      }
+
+      function renderProduct() {
+        var main = mainProductData();
+        renderSeo(main);
+        var imageHtml = main.image ? '<img src="' + escapeHtml(main.image) + '" alt="Preview ' + escapeHtml(main.title) + '" />' : '<div class="product-placeholder" aria-hidden="true"></div>';
+        var priceHtml = main.normalPrice && main.normalPrice !== main.promoPrice ? '<span class="price-normal">' + rupiah(main.normalPrice) + '</span>' : '';
+        priceHtml += '<strong class="price-final">' + rupiah(main.promoPrice) + '</strong>';
+        $("product-card").innerHTML = '<div class="product-media">' + imageHtml + '</div><div><p class="kicker">Produk utama</p><h2>' + escapeHtml(main.title) + '</h2><p>' + escapeHtml(main.description) + '</p><div class="price-row">' + priceHtml + '</div></div>';
+      }
+
+      function renderOrderBump() {
+        var bump = orderBumpData();
+        var element = $("order-bump");
+        if (!bump) { element.hidden = true; element.innerHTML = ""; return; }
+        element.hidden = false;
+        var imageHtml = bump.image ? '<img src="' + escapeHtml(bump.image) + '" alt="Preview ' + escapeHtml(bump.title) + '" />' : '<div class="bump-placeholder" aria-hidden="true"></div>';
+        var normal = bump.normalPrice && bump.normalPrice !== bump.promoPrice ? '<span class="price-normal">' + rupiah(bump.normalPrice) + '</span>' : '';
+        element.innerHTML = '<label class="bump-label"><input type="checkbox" id="order-bump-check" /><span class="bump-content"><span class="bump-media">' + imageHtml + '</span><span class="bump-copy"><span class="kicker">Order bump</span><strong>' + escapeHtml(bump.title) + '</strong><small>' + escapeHtml(bump.description) + '</small><span class="price-row">' + normal + '<span class="price-final">' + rupiah(bump.promoPrice) + '</span></span></span></span></label>';
+        $("order-bump-check").addEventListener("change", renderSummary);
+      }
+
+      function renderPaymentMethods() {
+        var element = $("payment-methods");
+        var options = store.paymentMethodOptions ? store.paymentMethodOptions.slice() : [];
+        if (CHECKOUT_STYLE.qrisFirst) {
+          options.sort(function (a, b) {
+            var av = String(a.value || a.display || "").toLowerCase().indexOf("qris") >= 0 ? -1 : 0;
+            var bv = String(b.value || b.display || "").toLowerCase().indexOf("qris") >= 0 ? -1 : 0;
+            return av - bv;
+          });
+        }
+        if (!options.length) {
+          element.innerHTML = '<div class="alert alert-error">Metode pembayaran belum tersedia dari dashboard Scalev.</div>';
+          return;
+        }
+        element.innerHTML = options.map(function (option, index) {
+          var id = "pay-" + index;
+          return '<label class="pay-option" for="' + id + '"><input type="radio" id="' + id + '" name="payment" value="' + escapeHtml(option.value) + '" ' + (index === 0 ? 'checked' : '') + ' /><span>' + escapeHtml(option.display || option.name || option.value) + '</span></label>';
+        }).join("");
+        document.querySelectorAll('input[name="payment"]').forEach(function (input) {
+          input.addEventListener("change", renderSummary);
+        });
+      }
+
+      function renderSummary() {
+        var main = mainProductData();
+        var bump = orderBumpChecked() ? orderBumpData() : null;
+        var total = main.promoPrice + (bump ? bump.promoPrice : 0);
+        var rows = '<div class="summary-row"><span>' + escapeHtml(main.title) + '</span><strong>' + rupiah(main.promoPrice) + '</strong></div>';
+        if (bump) rows += '<div class="summary-row"><span>' + escapeHtml(bump.title) + '</span><strong>' + rupiah(bump.promoPrice) + '</strong></div>';
+        if (appliedDiscount) rows += '<div class="summary-row"><span>Kode diskon</span><strong>' + escapeHtml(appliedDiscount) + '</strong></div>';
+        rows += '<div class="summary-row summary-total"><span>Total</span><strong>' + rupiah(total) + '</strong></div>';
+        $("summary-box").innerHTML = rows;
+        var sticky = $("sticky-total");
+        if (sticky) sticky.textContent = rupiah(total);
+      }
+
+      function showMessage(type, message) {
+        var element = $("form-message");
+        element.className = "alert " + (type === "error" ? "alert-error" : "alert-success");
+        element.textContent = message;
+        element.hidden = false;
+      }
+
+      function clearErrors() {
+        ["buyer-name", "buyer-phone", "buyer-email"].forEach(function (id) {
+          var input = $(id);
+          input.removeAttribute("aria-invalid");
+          var error = document.querySelector('[data-error-for="' + id + '"]');
+          if (error) error.textContent = "";
+        });
+        $("form-message").hidden = true;
+      }
+
+      function setFieldError(id, message) {
+        var input = $(id);
+        input.setAttribute("aria-invalid", "true");
+        var error = document.querySelector('[data-error-for="' + id + '"]');
+        if (error) error.textContent = message;
+      }
+
+      function validateForm() {
+        clearErrors();
+        var valid = true;
+        if (!$("buyer-name").value.trim()) { setFieldError("buyer-name", "Nama wajib diisi."); valid = false; }
+        if (!$("buyer-phone").value.trim()) { setFieldError("buyer-phone", "Nomor WhatsApp wajib diisi."); valid = false; }
+        var email = $("buyer-email").value.trim();
+        if (!email || !/^[^s@]+@[^s@]+.[^s@]+$/.test(email)) { setFieldError("buyer-email", "Email wajib valid."); valid = false; }
+        if (!document.querySelector('input[name="payment"]:checked')) { showMessage("error", "Pilih metode pembayaran dulu."); valid = false; }
+        if (!valid) {
+          var firstInvalid = document.querySelector('[aria-invalid="true"]');
+          if (firstInvalid) firstInvalid.focus();
+        }
+        return valid;
+      }
+
+      function publicOrderUrl(order) {
+        if (order.publicOrderUrl) return order.publicOrderUrl;
+        return new URL("/o/" + order.secretSlug, window.location.origin).toString();
+      }
+
+      function paymentInstructionUrl(order) {
+        if (order.status === "draft") return publicOrderUrl(order);
+        if (order.paymentUrl) return order.paymentUrl;
+        var url = new URL(publicOrderUrl(order));
+        url.pathname = url.pathname.replace(/\/$/, "") + "/success";
+        return url.toString();
+      }
+
+      function whatsappUrl(phone, order) {
+        var clean = String(phone || "").replace(/[^\d]/g, "");
+        var msg = order.chatMessage || "";
+        return "https://api.whatsapp.com/send/?phone=" + clean + "&text=" + encodeURIComponent(msg);
+      }
+
+      function navigateAfterOrder(url) {
+        function go() {
+          if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
+          window.location.assign(url);
+        }
+        if (CHECKOUT_STYLE.pixelDelayMs > 0) { setTimeout(go, CHECKOUT_STYLE.pixelDelayMs); } else { go(); }
+      }
+
+      function redirectAfterOrder(order) {
+        var type = afterCheckout.type || "success_page";
+        if (type === "direct_to_whatsapp") return navigateAfterOrder(order.handlerPhone ? whatsappUrl(order.handlerPhone, order) : publicOrderUrl(order));
+        if (type === "direct_to_custom_whatsapp") return navigateAfterOrder(whatsappUrl(afterCheckout.customWhatsappPhone, order));
+        if (type === "other_page") return navigateAfterOrder(afterCheckout.otherPagePath || "/");
+        if (type === "custom_url") return navigateAfterOrder(afterCheckout.customUrl || "/");
+        if (type === "order_page") return navigateAfterOrder(publicOrderUrl(order));
+        return navigateAfterOrder(paymentInstructionUrl(order));
+      }
+
+      function submitOrder() {
+        if (!validateForm()) return;
+        if (!window.Scalev || !window.Scalev.checkout || typeof window.Scalev.checkout.createOrder !== "function") {
+          showMessage("error", "Scalev checkout runtime tidak tersedia.");
+          return;
+        }
+        var payment = document.querySelector('input[name="payment"]:checked');
+        var payload = {
+          customer: {
+            name: $("buyer-name").value.trim(),
+            phone: $("buyer-phone").value.trim(),
+            email: $("buyer-email").value.trim()
+          },
+          items: checkoutItems(),
+          paymentMethod: payment.value
+        };
+        if (appliedDiscount) payload.discountCode = appliedDiscount;
+        $("submit-btn").disabled = true;
+        $("submit-btn").textContent = "Memproses pesanan...";
+        window.Scalev.checkout.createOrder(payload).then(function (order) {
+          if (!order) throw new Error("Gagal membuat pesanan.");
+          redirectAfterOrder(order);
+        }).catch(function (error) {
+          $("submit-btn").disabled = false;
+          $("submit-btn").textContent = "Buat Pesanan";
+          showMessage("error", error && error.message ? error.message : "Gagal membuat pesanan. Coba lagi.");
+        });
+      }
+
+      function bindDiscount() {
+        var button = $("discount-btn");
+        if (!button) return;
+        button.addEventListener("click", function () {
+          var code = $("discount-code").value.trim();
+          if (!code) { showMessage("error", "Masukkan kode diskon dulu."); return; }
+          if (!window.Scalev || !window.Scalev.checkout || typeof window.Scalev.checkout.validateDiscount !== "function") {
+            showMessage("error", "Validasi diskon tidak tersedia.");
+            return;
+          }
+          button.disabled = true;
+          button.textContent = "Cek...";
+          window.Scalev.checkout.validateDiscount({ discountCode: code }).then(function (result) {
+            if (result && result.valid) {
+              appliedDiscount = code;
+              showMessage("success", "Kode diskon diterapkan.");
+            } else {
+              appliedDiscount = null;
+              showMessage("error", "Kode diskon tidak valid.");
+            }
+            renderSummary();
+          }).catch(function () {
+            appliedDiscount = null;
+            showMessage("error", "Gagal validasi diskon.");
+            renderSummary();
+          }).finally(function () {
+            button.disabled = false;
+            button.textContent = "Pakai";
+          });
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", function () {
+        renderProduct();
+        renderOrderBump();
+        renderPaymentMethods();
+        renderSummary();
+        bindDiscount();
+        $("submit-btn").addEventListener("click", submitOrder);
+        ["buyer-name", "buyer-phone", "buyer-email"].forEach(function (id) {
+          $(id).addEventListener("input", clearErrors);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

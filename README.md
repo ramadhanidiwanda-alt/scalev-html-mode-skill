@@ -35,6 +35,13 @@ scalev-html-mode-skill/
 │   └── openai.yaml
 ├── assets/
 │   └── templates/
+│       ├── checkout-variants/
+│       │   ├── checkout-bento-order-bump.html
+│       │   ├── checkout-dark-premium.html
+│       │   ├── checkout-minimal-receipt.html
+│       │   ├── checkout-mobile-sticky.html
+│       │   ├── checkout-split-screen.html
+│       │   └── README.md
 │       ├── checkout-digital.html
 │       ├── checkout-digital-template.html
 │       ├── digital-products/
@@ -81,6 +88,18 @@ Use `assets/templates/digital-products/` for ready-to-adapt landing pages for se
 - Ebook AI
 
 Each template includes product-specific copy, SEO metadata, FAQ, disclaimer, and a distinct visual theme. Replace the final CTA `href="#checkout"` with the real Scalev checkout URL before publishing.
+
+## Checkout Variant Templates
+
+Use `assets/templates/checkout-variants/` for ready-to-adapt checkout pages with different layouts:
+
+- Split Screen Checkout
+- Bento Order Bump Checkout
+- Dark Premium Checkout
+- Mobile Sticky Checkout
+- Minimal Receipt Checkout
+
+Each checkout template keeps Scalev-safe runtime behavior: dynamic product data, dynamic payment methods, optional dynamic order bump, official `createOrder()` payload shape, `afterCheckout` redirect handling, and `pixelDelayMs = 600` redirect delay for analytics safety.
 
 ## Example Prompts
 
