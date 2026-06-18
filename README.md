@@ -37,6 +37,14 @@ scalev-html-mode-skill/
 │   └── templates/
 │       ├── checkout-digital.html
 │       ├── checkout-digital-template.html
+│       ├── digital-products/
+│       │   ├── ebook-ai.html
+│       │   ├── ebook-financial.html
+│       │   ├── ebook-productivity.html
+│       │   ├── template-keuangan.html
+│       │   ├── template-keuangan-bisnis.html
+│       │   ├── template-keuangan-mahasiswa.html
+│       │   └── template-keuangan-rumah-tangga.html
 │       └── landing-digital-template.html
 ├── scripts/
 │   └── check-html-js.mjs
@@ -59,6 +67,20 @@ node scripts/check-html-js.mjs path/to/page.html
 ```
 
 This catches JavaScript syntax errors inside inline `<script>` blocks. It does not emulate the Scalev runtime.
+
+## Digital Product Landing Templates
+
+Use `assets/templates/digital-products/` for ready-to-adapt landing pages for separate products:
+
+- Template Keuangan
+- Template Keuangan Bisnis
+- Template Keuangan Rumah Tangga
+- Template Keuangan Mahasiswa
+- Ebook Financial
+- Ebook Productivity
+- Ebook AI
+
+Each template includes product-specific copy, SEO metadata, FAQ, disclaimer, and a distinct visual theme. Replace the final CTA `href="#checkout"` with the real Scalev checkout URL before publishing.
 
 ## Example Prompts
 
