@@ -4,6 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Checkout Produk Digital</title>
+  <meta name="description" content="Checkout produk digital. Isi data pembeli, pilih metode pembayaran, dan selesaikan pesanan dengan aman." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Checkout Produk Digital" />
+  <meta property="og:description" content="Selesaikan pembelian produk digital melalui metode pembayaran yang tersedia." />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Checkout Produk Digital" />
+  <meta name="twitter:description" content="Selesaikan pembelian produk digital dengan aman." />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Rubik:wght@600;700;800;900&display=swap');
     *, *::before, *::after { box-sizing: border-box; }
@@ -216,6 +225,22 @@
       return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
     }
 
+    function setMeta(selector, value) {
+      var element = document.querySelector(selector);
+      if (element && value) element.setAttribute("content", value);
+    }
+
+    function renderSeo(main) {
+      var title = "Checkout " + (main.title || "Produk Digital");
+      var description = "Selesaikan pembelian " + (main.title || "produk digital") + " melalui metode pembayaran yang tersedia.";
+      document.title = title;
+      setMeta('meta[name="description"]', description);
+      setMeta('meta[property="og:title"]', title);
+      setMeta('meta[property="og:description"]', description);
+      setMeta('meta[name="twitter:title"]', title);
+      setMeta('meta[name="twitter:description"]', description);
+    }
+
     function productImage(product) {
       if (!product) return "";
       if (product.imageUrl) return product.imageUrl;
@@ -285,6 +310,7 @@
 
     function renderProduct() {
       var main = getMainProductData();
+      renderSeo(main);
       var imageHtml = main.image ? '<img src="' + escapeHtml(main.image) + '" alt="Preview ' + escapeHtml(main.title) + '" style="width:100%; height:100%; object-fit:cover; border-radius:18px;" />' : '<span class="product-badge">Produk Digital</span><strong>' + escapeHtml(main.title) + '</strong>';
       var hasPromo = main.normalPrice && main.promoPrice && main.normalPrice !== main.promoPrice;
       $("product-content").innerHTML = '<div class="product-preview">' + imageHtml + '</div><div class="product-info"><h3>' + escapeHtml(main.title) + '</h3><p>' + escapeHtml(main.description) + '</p><div class="price-row">' + (hasPromo ? '<span class="normal-price">' + rupiah(main.normalPrice) + '</span>' : '') + '<span class="promo-price">' + rupiah(main.promoPrice) + '</span></div></div>';

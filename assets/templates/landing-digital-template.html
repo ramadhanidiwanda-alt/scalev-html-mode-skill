@@ -4,6 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Landing Produk Digital</title>
+  <meta name="description" content="Landing page produk digital dengan penawaran, manfaat, isi bundle, testimoni, FAQ, dan CTA checkout." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Landing Produk Digital" />
+  <meta property="og:description" content="Produk digital siap pakai dengan materi praktis dan akses mudah setelah pembelian." />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Landing Produk Digital" />
+  <meta name="twitter:description" content="Produk digital siap pakai dengan materi praktis dan CTA checkout." />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&family=Rubik:wght@600;700;800;900&display=swap');
     *, *::before, *::after { box-sizing: border-box; }
@@ -263,6 +272,10 @@
   <script>
     var DIGITAL_PRODUCT_CONFIG = {
       brandName: "DigitalPro",
+      seo: {
+        title: "Bundle Template Bisnis Digital UMKM | DigitalPro",
+        description: "Bundle produk digital siap pakai untuk membantu UMKM membuat promosi, broadcast WhatsApp, checklist launching, dan tracker penjualan sederhana."
+      },
       checkoutUrl: "#checkout",
       category: "Bundle Template Bisnis Digital UMKM",
       hero: {
@@ -329,6 +342,23 @@
       if (element) element.textContent = value;
     }
 
+    function setMeta(selector, value) {
+      var element = document.querySelector(selector);
+      if (element && value) element.setAttribute('content', value);
+    }
+
+    function renderSeo(config) {
+      var seo = config.seo || {};
+      var title = seo.title || config.category || 'Landing Produk Digital';
+      var description = seo.description || config.hero.copy || 'Produk digital siap pakai dengan materi praktis dan akses mudah setelah pembelian.';
+      document.title = title;
+      setMeta('meta[name="description"]', description);
+      setMeta('meta[property="og:title"]', title);
+      setMeta('meta[property="og:description"]', description);
+      setMeta('meta[name="twitter:title"]', title);
+      setMeta('meta[name="twitter:description"]', description);
+    }
+
     function renderCards(target, items) {
       var element = document.querySelector(target);
       if (!element) return;
@@ -339,6 +369,7 @@
 
     function renderPage() {
       var config = DIGITAL_PRODUCT_CONFIG;
+      renderSeo(config);
       setText('[data-brand-name]', config.brandName);
       setText('[data-hero-eyebrow]', config.hero.eyebrow);
       setText('[data-hero-title]', config.hero.title);
