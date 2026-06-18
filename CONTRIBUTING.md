@@ -17,6 +17,13 @@ Thanks for improving Scalev HTML Mode Skill.
 - Do not hardcode product names, prices, payment methods, pixel IDs, or checkout URLs unless docs explicitly allow it.
 - Keep checkout redirects delayed with `pixelDelayMs` so analytics can fire.
 
+## Private Local Files
+
+- `private/` is ignored by Git and reserved for local-only product/customer artifacts.
+- Never stage, commit, push, or quote real product landing pages from `private/`.
+- Use sanitized fixtures in `tests/fixtures/` when examples need to be public.
+- Redact product names, customer data, emails, phone numbers, dashboard exports, and tracking IDs before sharing examples.
+
 ## Validation
 
 Run:

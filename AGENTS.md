@@ -62,10 +62,18 @@ Scalev HTML Mode Skill — skill project untuk Codex agent yang membangun, debug
 - Jangan pakai `estimateSummary()` untuk digital checkout
 - Jangan hardcode payment method list
 - Jangan hardcode product name, price, image, atau description
+- Jangan commit/push file landing page produk asli, customer data, atau file privat di `private/`
+- Jangan buka/print isi file di `private/` kecuali user eksplisit minta
 
 ---
 
 ## 3. Task Execution Rules
+
+### Private Local Files
+- Folder `private/` adalah local-only dan wajib tetap masuk `.gitignore`
+- Boleh dipakai untuk menyimpan landing page produk asli sebagai referensi/debug lokal
+- Jangan stage, commit, push, atau tampilkan isi file di `private/` tanpa instruksi eksplisit user
+- Kalau butuh contoh publik, buat fixture yang sudah disanitasi di `tests/fixtures/`
 
 ### Before Starting Any Task
 1. Baca SKILL.md + reference yang relevan
