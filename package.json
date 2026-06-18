@@ -1,0 +1,13 @@
+{
+  "name": "scalev-html-mode-skill",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Codex skill for building and reviewing custom Scalev HTML pages.",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/check-html-js.mjs assets/templates/*.html"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

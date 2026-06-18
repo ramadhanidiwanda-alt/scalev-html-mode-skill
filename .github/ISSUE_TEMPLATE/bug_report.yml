@@ -1,0 +1,49 @@
+name: Bug report
+description: Report broken template behavior, validation bug, or docs mismatch.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What broke?
+    validations:
+      required: true
+  - type: dropdown
+    id: page_type
+    attributes:
+      label: Page type
+      options:
+        - Landing page
+        - Checkout page
+        - Thank-you page
+        - Skill docs/reference
+        - Validation script
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation output
+      description: Paste `npm run validate` or `node scripts/check-html-js.mjs <file.html>` output.
+      render: shell
+  - type: textarea
+    id: runtime_data
+    attributes:
+      label: Relevant Scalev runtime shape
+      description: Redact personal data, tokens, emails, phone numbers, and customer details.
+      render: json
