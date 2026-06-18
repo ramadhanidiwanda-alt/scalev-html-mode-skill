@@ -5,3 +5,6 @@
 node_modules/
 __pycache__/
 .pytest_cache/
+
+# Private product landing pages and local-only artifacts
+private/
