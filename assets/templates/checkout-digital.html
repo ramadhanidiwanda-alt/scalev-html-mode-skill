@@ -3,7 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Checkout</title>
+  <title>Checkout Produk Digital</title>
+  <meta name="description" content="Checkout produk digital. Isi data pembeli, pilih metode pembayaran, dan selesaikan pesanan dengan aman." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Checkout Produk Digital" />
+  <meta property="og:description" content="Selesaikan pembelian produk digital melalui metode pembayaran yang tersedia." />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Checkout Produk Digital" />
+  <meta name="twitter:description" content="Selesaikan pembelian produk digital dengan aman." />
   <style>
     * { box-sizing: border-box; }
     body { margin: 0; font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f8fafc; color: #0f172a; }
@@ -62,6 +71,11 @@
       return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
     }
 
+    function setMeta(selector, value) {
+      var element = document.querySelector(selector);
+      if (element && value) element.setAttribute("content", value);
+    }
+
     function checkoutItems() {
       var product = store.products[0] || {};
       var variant = product.variants && product.variants[0] ? product.variants[0] : {};
@@ -105,6 +119,15 @@
     var variant = product.variants && product.variants[0] ? product.variants[0] : {};
     var priceOption = store.bundlePriceOptions && store.bundlePriceOptions[0] ? store.bundlePriceOptions[0] : null;
     var finalPrice = priceOption ? Number(priceOption.price || 0) : Number(variant.price || 0);
+
+    var seoTitle = "Checkout " + (product.name || "Produk Digital");
+    var seoDescription = "Selesaikan pembelian " + (product.name || "produk digital") + " melalui metode pembayaran yang tersedia.";
+    document.title = seoTitle;
+    setMeta('meta[name="description"]', seoDescription);
+    setMeta('meta[property="og:title"]', seoTitle);
+    setMeta('meta[property="og:description"]', seoDescription);
+    setMeta('meta[name="twitter:title"]', seoTitle);
+    setMeta('meta[name="twitter:description"]', seoDescription);
 
     document.getElementById("productName").textContent = product.name || "Produk Digital";
     document.getElementById("productDescription").textContent = product.description || "Isi data untuk membuat pesanan.";

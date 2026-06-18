@@ -54,6 +54,11 @@ Fix: tambahkan `pixelDelayMs` (default 600ms) sebelum redirect. Gunakan `setTime
 Cause: sama seperti di atas — redirect terlalu cepat.
 Fix: pastikan `navigateAfterOrder` pakai `setTimeout` dengan `pixelDelayMs`. Delay berlaku untuk semua redirect type: `success_page`, `direct_to_whatsapp`, `custom_url`, dll.
 
+## Meta Pixel event Purchase dobel
+
+Cause: custom checkout HTML mengirim `Purchase` setelah `createOrder()`, lalu Scalev payment/success flow atau dashboard analytics juga mengirim `Purchase` untuk order yang sama. Tanpa `event_id` dedup yang sama, Meta menghitungnya sebagai dua purchase.
+Fix: pilih satu conversion point. Untuk HTML Mode yang redirect ke payment/success Scalev, hapus manual `track("facebook", "Purchase")`, `PlaceOrder`, atau event purchase sejenis dari callback sukses `createOrder()`. Biarkan payment/success flow menangani purchase, atau jika user eksplisit minta purchase di order-created, pastikan flow lain tidak mengirim purchase lagi.
+
 ## Page-load event tidak sesuai kebutuhan user
 
 Cause: custom HTML menembak event default seperti `PageView`, atau mencoba membaca pengaturan dashboard dari `Scalev.data.get()` padahal runtime tidak mengekspos setting event halaman.
@@ -101,3 +106,8 @@ Event setelah interaksi user (submit, klik) tidak perlu retry karena `fbq` pasti
 
 Observation: custom HTML mengirim event ke `https://api.scalev.com/v3/stores/{store_id}/public/analytics/meta/events` bersamaan dengan browser Pixel. Ini bisa bikin event dobel di Meta Ads Manager kalau dedup tidak sempurna, dan menambah kompleksitas tanpa manfaat jelas.
 Fix: andalkan browser Pixel (`fbq("trackSingle", ...)`) saja. Hapus `fetch()` ke endpoint analytics Scalev, `eventIdFor()`, dan `cookieValue()` untuk fbp/fbc dari custom HTML.
+
+## Judul halaman masih default Scalev
+
+Cause: template masih memakai title generik seperti `Scalev HTML Mode Page`, `Checkout`, atau `Landing Produk Digital`, dan belum punya meta description / Open Graph.
+Fix: ganti title dan meta sesuai produk sebelum import ke Scalev. Landing page pakai `robots` `index, follow`; checkout page pakai `robots` `noindex, nofollow` agar halaman checkout tidak masuk hasil pencarian.

@@ -122,6 +122,15 @@ Update client-side summary when checkbox changes. Total should equal main promo 
 - Do not call `fbq("init", pixelId)` again when Scalev already provides `fbq`; re-init can conflict and stop events.
 - Do not manually trigger `PageView` unless user explicitly requests it. Scalev/Meta base script may already emit PageView.
 - `Scalev.analytics.track(provider, payload)` must use official camelCase payload: `events: [{ eventName, parameters }]`. Do not send top-level `event` or snake_case `event_name`.
+- Avoid duplicate purchase conversions. If Scalev payment/success flow or dashboard analytics already fires `Purchase`, do not also fire `Purchase` / `PlaceOrder` from custom checkout HTML after `createOrder()`.
+- Pick one purchase conversion point: order created in custom HTML, payment success page, or Scalev dashboard flow. Do not use more than one unless browser and server events share a deterministic event ID for deduplication.
+
+## SEO Metadata
+
+- Replace default titles such as `Scalev HTML Mode Page`, `Checkout`, or `Landing Produk Digital` before delivery.
+- Landing pages should include product-specific `<title>`, `meta description`, Open Graph, Twitter card, and `robots` set to `index, follow` unless user wants a private/noindex page.
+- Checkout pages should include product-specific `<title>` and `meta description`, but use `robots` set to `noindex, nofollow` so payment/data-entry pages do not appear in search results.
+- Keep SEO copy static in the HTML head. If a reusable template has config-driven copy, update `document.title` and matching meta tags from the config during render.
 
 ## References
 
