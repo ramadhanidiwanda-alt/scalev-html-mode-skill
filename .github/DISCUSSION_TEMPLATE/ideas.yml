@@ -1,0 +1,17 @@
+title: "Idea: "
+labels: ["idea"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Idea
+      description: What should this skill support next?
+    validations:
+      required: true
+  - type: textarea
+    id: use_case
+    attributes:
+      label: Use case
+      description: Which Scalev page or workflow needs it?
+    validations:
+      required: true
