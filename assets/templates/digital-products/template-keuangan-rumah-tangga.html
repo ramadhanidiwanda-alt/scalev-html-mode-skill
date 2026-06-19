@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Template Keuangan Rumah Tangga untuk Budget Bulanan</title>
+  <meta name="description" content="Template keuangan rumah tangga untuk mencatat belanja, tagihan, cicilan, tabungan, dan dana darurat keluarga." />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Template Keuangan Rumah Tangga untuk Budget Bulanan" />
+  <meta property="og:description" content="Template keuangan rumah tangga untuk mencatat belanja, tagihan, cicilan, tabungan, dan dana darurat keluarga." />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Template Keuangan Rumah Tangga untuk Budget Bulanan" />
+  <meta name="twitter:description" content="Template keuangan rumah tangga untuk mencatat belanja, tagihan, cicilan, tabungan, dan dana darurat keluarga." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700;800;900&family=Nunito+Sans:wght@400;500;600;700&display=swap');
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      --bg: #fff8f1;
+      --surface: #ffffff;
+      --soft: #ffedd5;
+      --text: #3b2414;
+      --muted: #84624c;
+      --primary: #c2410c;
+      --secondary: #ea580c;
+      --accent: #0f766e;
+      --border: #fed7aa;
+      --hero: #fff1e6;
+      --heading-font: 'Fraunces', system-ui, sans-serif;
+      --body-font: 'Nunito Sans', system-ui, sans-serif;
+      --shadow: 0 24px 70px rgba(31, 41, 55, .12);
+      --radius-lg: 32px;
+      --radius-md: 20px;
+      --max-width: 1120px;
+    }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; font-family: var(--body-font); color: var(--text); background: var(--bg); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .55; background: radial-gradient(circle at 10% 10%, var(--hero), transparent 30%), radial-gradient(circle at 90% 0%, var(--soft), transparent 28%), radial-gradient(circle at 80% 80%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 34%); z-index: -1; }
+    a { color: inherit; }
+    img, svg { display: block; max-width: 100%; }
+    .skip-link { position: absolute; left: 16px; top: -80px; background: var(--text); color: var(--surface); padding: 12px 16px; border-radius: 999px; z-index: 10; }
+    .skip-link:focus { top: 16px; }
+    .container { width: min(100% - 32px, var(--max-width)); margin: 0 auto; }
+    .nav { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 0; }
+    .brand { font-family: var(--heading-font); font-weight: 800; letter-spacing: -.03em; text-decoration: none; }
+    .nav-links { display: flex; gap: 18px; align-items: center; color: var(--muted); font-size: .95rem; }
+    .nav-links a { text-decoration: none; }
+    .btn { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; border-radius: 999px; border: 1px solid transparent; padding: 13px 22px; font-weight: 800; text-decoration: none; cursor: pointer; transition: transform .2s ease, box-shadow .2s ease, background .2s ease; }
+    .btn-primary { background: var(--primary); color: #ffffff; box-shadow: var(--shadow); }
+    .btn-secondary { border-color: var(--border); color: var(--text); background: color-mix(in srgb, var(--surface) 86%, transparent); }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:focus-visible, summary:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .hero { padding: 56px 0 70px; }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(320px, .95fr); gap: 40px; align-items: center; }
+    .eyebrow { display: inline-flex; border: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 72%, transparent); border-radius: 999px; color: var(--primary); padding: 8px 14px; font-weight: 800; margin-bottom: 18px; }
+    h1, h2, h3 { font-family: var(--heading-font); letter-spacing: -.04em; line-height: 1.05; margin: 0; }
+    h1 { font-size: clamp(2.6rem, 8vw, 5.7rem); max-width: 11ch; }
+    h2 { font-size: clamp(2rem, 5vw, 3.6rem); max-width: 13ch; }
+    h3 { font-size: 1.18rem; }
+    .hero-copy { font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--muted); max-width: 58ch; margin: 24px 0; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 34px; }
+    .proof span { border: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 82%, transparent); border-radius: 18px; padding: 14px; font-weight: 800; color: var(--text); }
+    .preview { position: relative; border: 1px solid var(--border); background: linear-gradient(135deg, color-mix(in srgb, var(--surface) 86%, transparent), color-mix(in srgb, var(--soft) 90%, transparent)); border-radius: var(--radius-lg); padding: 24px; box-shadow: var(--shadow); overflow: hidden; }
+    .preview::before { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 999px; right: -50px; top: -50px; background: color-mix(in srgb, var(--accent) 35%, transparent); }
+    .mock-window { position: relative; display: grid; gap: 16px; }
+    .mock-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-weight: 800; }
+    .mock-pill { border-radius: 999px; padding: 8px 12px; background: var(--primary); color: #ffffff; font-size: .88rem; }
+    .mock-lines { display: grid; gap: 12px; }
+    .line { height: 16px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 30%, var(--surface)); }
+    .line:nth-child(2) { width: 72%; background: color-mix(in srgb, var(--secondary) 28%, var(--surface)); }
+    .line:nth-child(3) { width: 54%; background: color-mix(in srgb, var(--accent) 32%, var(--surface)); }
+    .mock-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .mock-card { border: 1px solid var(--border); border-radius: 18px; padding: 18px; background: color-mix(in srgb, var(--surface) 80%, transparent); min-height: 104px; }
+    .mock-card strong { display: block; font-family: var(--heading-font); font-size: 1.8rem; margin-bottom: 6px; }
+    .section { padding: 78px 0; }
+    .section-head { display: flex; justify-content: space-between; gap: 28px; align-items: end; margin-bottom: 28px; }
+    .section-head p { max-width: 54ch; color: var(--muted); margin: 0; }
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .card, .mini-card, .faq-item, .offer-box { border: 1px solid var(--border); background: color-mix(in srgb, var(--surface) 88%, transparent); border-radius: var(--radius-md); box-shadow: 0 14px 40px rgba(31, 41, 55, .07); }
+    .card { padding: 24px; }
+    .mini-card { padding: 22px; }
+    .mini-card .num { display: inline-flex; width: 38px; height: 38px; border-radius: 12px; align-items: center; justify-content: center; background: var(--soft); color: var(--primary); font-family: var(--heading-font); font-weight: 900; margin-bottom: 18px; }
+    .mini-card p, .card p { margin: 0; color: var(--muted); }
+    .feature-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .feature-list li { padding: 16px 18px; border: 1px solid var(--border); border-radius: 16px; background: color-mix(in srgb, var(--soft) 72%, transparent); font-weight: 700; }
+    .fit-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .fit-list li { border: 1px solid var(--border); border-radius: 999px; padding: 10px 14px; background: color-mix(in srgb, var(--surface) 86%, transparent); color: var(--muted); font-weight: 700; }
+    .offer-box { padding: clamp(28px, 5vw, 56px); background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 18%, var(--surface)), color-mix(in srgb, var(--accent) 18%, var(--surface))); }
+    .offer-box p { max-width: 62ch; color: var(--muted); }
+    .faq-list { display: grid; gap: 12px; }
+    .faq-item { padding: 0; overflow: hidden; }
+    summary { min-height: 48px; cursor: pointer; padding: 18px 20px; font-weight: 800; font-family: var(--heading-font); }
+    .faq-item p { margin: 0; padding: 0 20px 18px; color: var(--muted); }
+    .disclaimer { border-left: 4px solid var(--accent); color: var(--muted); background: color-mix(in srgb, var(--soft) 72%, transparent); padding: 18px; border-radius: 16px; }
+    .footer { padding: 38px 0; color: var(--muted); }
+    @media (max-width: 860px) {
+      .nav-links { display: none; }
+      .hero-grid, .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      h1 { max-width: none; }
+      .section-head { display: block; }
+      .feature-list { grid-template-columns: 1fr; }
+      .proof { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .container { width: min(100% - 24px, var(--max-width)); }
+      .hero { padding-top: 34px; }
+      .hero-actions .btn { width: 100%; }
+      .preview { padding: 18px; border-radius: 24px; }
+      .mock-grid { grid-template-columns: 1fr; }
+      .section { padding: 58px 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body class="theme-warm">
+  <a href="#main" class="skip-link">Lewati ke konten utama</a>
+  <header class="container nav" aria-label="Navigasi halaman">
+    <a href="#" class="brand">Template Budget Rumah Tangga</a>
+    <nav class="nav-links" aria-label="Bagian halaman">
+      <a href="#problem">Masalah</a>
+      <a href="#contents">Isi</a>
+      <a href="#offer">Penawaran</a>
+    </nav>
+    <a class="btn btn-secondary" href="#offer">Ambil Template Rumah Tangga</a>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Template Budget Rumah Tangga</span>
+          <h1 id="hero-title">Bikin uang rumah tangga lebih mudah dibaca.</h1>
+          <p class="hero-copy">Template untuk membantu mencatat belanja bulanan, tagihan, cicilan, tabungan, dan dana darurat keluarga dalam satu format rapi.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#offer">Ambil Template Rumah Tangga</a>
+            <a class="btn btn-secondary" href="#contents">Lihat Isi Template</a>
+          </div>
+          <div class="proof" aria-label="Ringkasan manfaat">
+            <span>Belanja</span>
+            <span>Tagihan</span>
+            <span>Tabungan</span>
+          </div>
+        </div>
+        <aside class="preview" aria-label="Preview produk digital">
+          <div class="mock-window">
+            <div class="mock-head">
+              <span>Warm Home Budget</span>
+              <span class="mock-pill">Digital</span>
+            </div>
+            <div class="mock-lines"><span class="line"></span><span class="line"></span><span class="line"></span></div>
+            <div class="mock-grid">
+              <div class="mock-card"><strong>01</strong><span>Belanja</span></div>
+              <div class="mock-card"><strong>02</strong><span>Tagihan</span></div>
+              <div class="mock-card"><strong>03</strong><span>Tabungan</span></div>
+              <div class="mock-card"><strong>04</strong><span>Siap pakai</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section" id="problem" aria-labelledby="problem-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="problem-title">Pengeluaran rumah sering terlihat kecil, tapi totalnya besar.</h2>
+          <p>Bagian ini dibuat untuk langsung nyambung dengan kondisi pembeli sebelum mereka melihat isi produk.</p>
+        </div>
+        <div class="grid grid-2">
+          <article class="mini-card">
+            <span class="num">01</span>
+            <p>Belanja harian tidak tercatat.</p>
+          </article>
+          <article class="mini-card">
+            <span class="num">02</span>
+            <p>Tagihan datang bersamaan dan bikin kaget.</p>
+          </article>
+          <article class="mini-card">
+            <span class="num">03</span>
+            <p>Cicilan, tabungan, dan kebutuhan bulanan tercampur.</p>
+          </article>
+          <article class="mini-card">
+            <span class="num">04</span>
+            <p>Diskusi uang keluarga jadi sulit karena tidak ada data.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="solution-title">
+      <div class="container grid grid-2">
+        <div>
+          <h2 id="solution-title">Buat catatan rumah tangga yang bisa dibaca bersama.</h2>
+        </div>
+        <article class="card">
+          <p>Template ini membantu keluarga mencatat pengeluaran rutin, tagihan, cicilan, dan target tabungan supaya budget bulanan lebih jelas dan mudah dievaluasi.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="contents" aria-labelledby="contents-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="contents-title">Isi produk</h2>
+          <p>Gunakan daftar ini sebagai blok konten utama. Silakan sesuaikan nama file, jumlah halaman, atau format akhir produk.</p>
+        </div>
+        <ul class="feature-list">
+          <li>Budget bulanan keluarga</li>
+<li>Catatan belanja harian</li>
+<li>Daftar tagihan</li>
+<li>Catatan cicilan</li>
+<li>Target tabungan</li>
+<li>Dana darurat</li>
+<li>Rekap bulanan</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="benefit-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="benefit-title">Manfaat yang terasa saat dipakai</h2>
+          <p>Copy fokus pada hasil praktis, bukan klaim berlebihan.</p>
+        </div>
+        <div class="grid grid-2">
+          <article class="mini-card">
+            <span class="num">01</span>
+            <p>Lebih mudah tahu kebutuhan utama keluarga.</p>
+          </article>
+          <article class="mini-card">
+            <span class="num">02</span>
+            <p>Tagihan dan cicilan tidak mudah terlewat.</p>
+          </article>
+          <article class="mini-card">
+            <span class="num">03</span>
+            <p>Budget belanja lebih terkontrol.</p>
+          </article>
+          <article class="mini-card">
+            <span class="num">04</span>
+            <p>Diskusi keuangan rumah lebih berbasis catatan.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="fit-title">
+      <div class="container grid grid-2">
+        <div>
+          <h2 id="fit-title">Cocok untuk</h2>
+        </div>
+        <div>
+          <ul class="fit-list">
+            <li>Pasangan muda</li>
+<li>Ibu rumah tangga</li>
+<li>Keluarga dengan budget bulanan</li>
+<li>Siapa pun yang mengatur belanja rumah</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="offer" aria-labelledby="offer-title">
+      <div class="container offer-box">
+        <span class="eyebrow">Penawaran</span>
+        <h2 id="offer-title">Rapikan budget rumah tangga dengan format siap pakai.</h2>
+        <p>Mulai dari catatan sederhana agar uang bulanan lebih jelas perginya ke mana.</p>
+        <a class="btn btn-primary" href="#checkout">Ambil Template Rumah Tangga</a>
+        <p class="disclaimer">Template ini alat bantu pencatatan rumah tangga, bukan nasihat keuangan personal.</p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="faq-title">Pertanyaan umum</h2>
+          <p>FAQ ini bisa diedit sesuai format file, aturan akses, dan kebijakan refund produk.</p>
+        </div>
+        <div class="faq-list">
+          
+          <details class="faq-item" open>
+            <summary>Apakah bisa dipakai bersama pasangan?</summary>
+            <p>Bisa. Template ini bisa menjadi dasar diskusi budget rumah tangga.</p>
+          </details>
+          <details class="faq-item" >
+            <summary>Apakah ada bagian cicilan?</summary>
+            <p>Ya. Ada bagian untuk mencatat cicilan dan tagihan rutin.</p>
+          </details>
+          <details class="faq-item" >
+            <summary>Apakah cocok kalau penghasilan tidak tetap?</summary>
+            <p>Cocok. Kamu bisa menyesuaikan pemasukan dan budget sesuai kondisi tiap bulan.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">Template landing page HTML Mode untuk Template Budget Rumah Tangga. Ganti brand, harga, CTA, dan link checkout sebelum dipakai.</div>
+  </footer>
+</body>
+</html>
