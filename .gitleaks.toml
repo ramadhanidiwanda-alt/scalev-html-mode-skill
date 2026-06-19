@@ -1,0 +1,11 @@
+title = "Scalev HTML Mode Skill gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Repo-local false positives"
+paths = [
+  '''^tests/fixtures/''',
+  '''^docs/'''
+]
