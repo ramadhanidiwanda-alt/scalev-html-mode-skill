@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout Bundle Stimulasi Bicara Anak</title>
+  <meta name="description" content="Checkout resmi Bundle Stimulasi Bicara Anak. Isi data pembeli, pilih metode pembayaran, dan akses materi digital setelah pesanan berhasil." />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Checkout Bundle Stimulasi Bicara Anak" />
+  <meta property="og:description" content="Selesaikan pembelian Bundle Stimulasi Bicara Anak secara aman melalui metode pembayaran yang tersedia." />
+  <meta property="og:locale" content="id_ID" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Checkout Bundle Stimulasi Bicara Anak" />
+  <meta name="twitter:description" content="Selesaikan pembelian bundle digital stimulasi bicara anak." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --error: #ef4444;
+      --success: #22c55e;
+      --radius: 10px;
+      --radius-sm: 6px;
+      --shadow: 0 1px 3px rgba(0,0,0,.06), 0 2px 8px rgba(0,0,0,.04);
+      --max-width: 600px;
+      --font: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: var(--font); color: var(--text); background: var(--bg);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+
+    .container { max-width: var(--max-width); margin: 0 auto; padding: 0 16px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+    /* Header */
+    .header {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; padding-bottom: 12px; }
+    .logo { font-size: 1.15rem; font-weight: 800; color: var(--text); text-decoration: none; }
+    .logo span { color: var(--primary); }
+    .header-badge { font-size: .78rem; color: var(--text-light); }
+
+    /* Main */
+    .main { padding: 24px 0 48px; }
+
+    /* Card */
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; margin-bottom: 16px;
+    }
+    .card-title {
+      font-size: 1rem; font-weight: 700; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-title .num {
+      width: 24px; height: 24px; background: var(--primary); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 800; flex-shrink: 0;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 14px; }
+    .form-label {
+      display: block; font-size: .85rem; font-weight: 600; margin-bottom: 4px; color: var(--text);
+    }
+    .form-label .required { color: var(--error); }
+    .form-input {
+      width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-size: .92rem; font-family: var(--font); color: var(--text); background: var(--surface);
+      transition: border-color .2s;
+    }
+    .form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,.12); }
+    .form-input.error { border-color: var(--error); }
+    .form-error { font-size: .78rem; color: var(--error); margin-top: 3px; display: none; }
+    .form-error.show { display: block; }
+
+    /* Product */
+    .product-summary {
+      display: flex; gap: 14px; align-items: center; padding: 14px;
+      background: var(--bg); border-radius: var(--radius-sm);
+    }
+    .product-summary .product-info { flex: 1; }
+    .product-summary .product-name { font-weight: 700; font-size: .95rem; }
+    .product-summary .product-price { color: var(--primary); font-weight: 700; font-size: .95rem; }
+    .product-summary .product-qty { color: var(--text-light); font-size: .82rem; margin-top: 2px; }
+    .product-summary .price-normal { text-decoration: line-through; color: var(--text-light); font-size: .82rem; margin-right: 6px; }
+    .product-summary .price-promo { color: var(--primary); font-weight: 700; font-size: 1rem; }
+    .summary-row .price-del { text-decoration: line-through; color: var(--text-light); margin-right: 6px; }
+
+    /* Payment */
+    .payment-grid { display: grid; gap: 8px; }
+    .payment-option { display: none; }
+    .payment-option:checked + .payment-label { border-color: var(--primary); background: #eff6ff; }
+    .payment-label {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+      border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .payment-label:hover { border-color: var(--primary); }
+    .payment-label img { width: 36px; height: 24px; object-fit: contain; flex-shrink: 0; }
+    .payment-label span { font-size: .9rem; font-weight: 600; }
+
+    /* Discount */
+    .discount-row { display: flex; gap: 8px; }
+    .discount-row .form-input { flex: 1; }
+    .discount-msg { font-size: .8rem; margin-top: 4px; }
+    .discount-msg.success { color: var(--success); }
+    .discount-msg.error { color: var(--error); }
+
+    /* Order Bump */
+    .order-bump-card { border: 1px solid #f59e0b; background: #fffbeb; }
+    .order-bump-content { display: flex; gap: 14px; align-items: center; }
+    .order-bump-image { width: 86px; height: 86px; border-radius: var(--radius-sm); object-fit: cover; background: #fff; border: 1px solid #fde68a; flex-shrink: 0; }
+    .order-bump-info { flex: 1; min-width: 0; }
+    .order-bump-badge { display: inline-flex; color: #92400e; background: #fef3c7; border: 1px solid #fde68a; border-radius: 999px; padding: 2px 8px; font-size: .72rem; font-weight: 800; margin-bottom: 6px; }
+    .order-bump-name { font-weight: 800; font-size: .96rem; margin-bottom: 3px; }
+    .order-bump-desc { color: var(--text-light); font-size: .82rem; margin-bottom: 8px; }
+    .order-bump-benefits { list-style: none; display: grid; gap: 3px; margin-bottom: 9px; }
+    .order-bump-benefits li { color: var(--text); font-size: .8rem; }
+    .order-bump-note { color: #92400e; font-size: .78rem; font-weight: 700; margin-bottom: 10px; }
+    .order-bump-price { display: flex; gap: 7px; align-items: baseline; margin-bottom: 10px; }
+    .order-bump-price .normal { text-decoration: line-through; color: var(--text-light); font-size: .82rem; }
+    .order-bump-price .promo { color: var(--primary); font-weight: 800; font-size: 1rem; }
+    .order-bump-check { display: flex; align-items: flex-start; gap: 8px; font-size: .86rem; font-weight: 700; cursor: pointer; }
+    .order-bump-check input { margin-top: 4px; accent-color: var(--primary); }
+
+    /* Summary */
+    .summary-row { display: flex; justify-content: space-between; font-size: .9rem; padding: 4px 0; }
+    .summary-row.total { font-weight: 800; font-size: 1.05rem; border-top: 1px solid var(--border); padding-top: 12px; margin-top: 8px; }
+
+    /* Button */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px 32px; border-radius: var(--radius); font-weight: 700; font-size: 1rem;
+      border: none; cursor: pointer; transition: all .2s; text-decoration: none; line-height: 1.2;
+      width: 100%;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); box-shadow: var(--shadow); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    /* Messages */
+    .alert {
+      padding: 12px 16px; border-radius: var(--radius-sm); font-size: .88rem; margin-bottom: 16px;
+    }
+    .alert-error { background: #fef2f2; border: 1px solid #fecaca; color: #991b1b; }
+    .alert-info { background: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; }
+
+    /* Loading */
+    .loading-overlay {
+      display: none; position: fixed; inset: 0; background: rgba(255,255,255,.8);
+      z-index: 100; align-items: center; justify-content: center;
+    }
+    .loading-overlay.show { display: flex; }
+    .spinner {
+      width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary);
+      border-radius: 50%; animation: spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success page */
+    .success-page { display: none; text-align: center; padding: 48px 0; }
+    .success-page.show { display: block; }
+    .success-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .success-page h2 { font-size: 1.5rem; margin-bottom: .5rem; }
+    .success-page p { color: var(--text-light); margin-bottom: 1.5rem; }
+    .success-detail { text-align: left; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .success-detail .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: .9rem; }
+    .success-detail .row:not(:last-child) { border-bottom: 1px solid var(--border); }
+    .success-detail .row .label { color: var(--text-light); }
+    .success-detail .row .value { font-weight: 600; }
+    .whatsapp-btn {
+      display: inline-flex; align-items: center; gap: 8px; background: #25D366; color: #fff;
+      padding: 14px 28px; border-radius: var(--radius); font-weight: 700; text-decoration: none;
+      margin-top: 1rem;
+    }
+
+    /* Empty state */
+    .empty-state { text-align: center; padding: 24px 0; color: var(--text-light); }
+
+    @media (max-width: 480px) {
+      .card { padding: 18px 14px; }
+      .order-bump-content { flex-direction: column; align-items: stretch; }
+      .order-bump-image { width: 100%; height: auto; max-height: none; object-fit: contain; border-radius: var(--radius); }
+    }
+  </style>
+</head>
+<body>
+
+  
+
+  <main class="main" id="checkout-page">
+    <div class="container">
+
+      <!-- ===== 1. PRODUK ===== -->
+      <div class="card" id="product-card">
+        <h2 class="card-title"><span class="num" aria-hidden="true">1</span> Produk</h2>
+        <div id="product-content">
+          <div class="empty-state">Memuat produk…</div>
+        </div>
+      </div>
+
+      <!-- ===== 2. DATA DIRI ===== -->
+      <div class="card" id="customer-card">
+        <h2 class="card-title"><span class="num" aria-hidden="true">2</span> Data Diri</h2>
+        <div class="form-group">
+          <label class="form-label" for="cust-name">Nama Lengkap <span class="required">*</span></label>
+          <input type="text" id="cust-name" class="form-input" required placeholder="Nama kamu" autocomplete="name" />
+          <span class="form-error" id="err-name">Nama wajib diisi</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cust-phone">Nomor WhatsApp <span class="required">*</span></label>
+          <input type="tel" id="cust-phone" class="form-input" required placeholder="0812xxxxxxxx" autocomplete="tel" />
+          <span class="form-error" id="err-phone">Nomor WA wajib diisi</span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cust-email">Email <span class="required">*</span></label>
+          <input type="email" id="cust-email" class="form-input" required placeholder="bunda@email.com" autocomplete="email" />
+          <span class="form-error" id="err-email">Email wajib diisi dengan format benar</span>
+        </div>
+      </div>
+
+      <!-- ===== 3. METODE PEMBAYARAN ===== -->
+      <div class="card" id="payment-card">
+        <h2 class="card-title"><span class="num" aria-hidden="true">3</span> Metode Pembayaran</h2>
+        <div id="payment-content">
+          <div class="empty-state">Memuat metode pembayaran…</div>
+        </div>
+      </div>
+
+      <!-- ===== 4. KODE DISKON ===== -->
+      <div class="card" id="discount-card">
+        <h2 class="card-title">🎫 Kode Diskon</h2>
+        <div class="discount-row">
+          <input type="text" id="discount-code" class="form-input" placeholder="Masukkan kode diskon" />
+          <button type="button" id="discount-btn" class="btn btn-primary" style="width:auto;padding:10px 20px;font-size:.88rem;">Pakai</button>
+        </div>
+        <div class="discount-msg" id="discount-msg"></div>
+      </div>
+
+      <!-- ===== 5. ORDER BUMP ===== -->
+      <div class="card order-bump-card" id="order-bump-card" style="display:none;">
+        <h2 class="card-title">Tambahan Sekali Klik</h2>
+        <div id="order-bump-content"></div>
+      </div>
+
+      <!-- ===== 6. RINGKASAN ===== -->
+      <div class="card" id="summary-card">
+        <h2 class="card-title">Ringkasan Pesanan</h2>
+        <div id="summary-content">
+          <div class="empty-state">Pilih metode pembayaran untuk melihat ringkasan</div>
+        </div>
+      </div>
+
+      <!-- ===== SUBMIT ===== -->
+      <button type="button" id="submit-btn" class="btn btn-primary btn-lg" style="font-size:1.05rem;">
+        🛒 Buat Pesanan Sekarang
+      </button>
+      <div class="alert alert-error" id="submit-error" style="display:none;margin-top:12px;"></div>
+    </div>
+  </main>
+
+  <!-- ===== SUCCESS PAGE ===== -->
+  <div class="success-page container" id="success-page">
+    <div class="success-icon">✅</div>
+    <h2>Pesanan Berhasil Dibuat!</h2>
+    <p>Terima kasih, Bunda. Berikut detail pesanan kamu:</p>
+    <div class="success-detail" id="success-detail"></div>
+    <div id="success-action" style="margin-top:1rem;"></div>
+  </div>
+
+  <!-- ===== LOADING ===== -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="text-align:center;padding:24px 0;color:var(--text-light);font-size:.8rem;border-top:1px solid var(--border);">
+    <div class="container">
+      <p>&copy; <span id="footer-year">2026</span> Sahabat Bunda</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var scalev;
+      try {
+        scalev = (window.Scalev && typeof window.Scalev.data === "object" && typeof window.Scalev.data.get === "function")
+          ? window.Scalev.data.get()
+          : null;
+      } catch (e) { scalev = null; }
+      var store = (scalev && scalev.store) || null;
+      var afterCheckout = (scalev && scalev.afterCheckout) || null;
+      var pixelDelayMs = 600;
+
+	     var metaPixelId = "1102545451792294";
+
+	      function metaPixelParams(extra, options) {
+	        var cart = cartState(options);
+	        var params = {
+	          content_ids: cart.contentIds,
+	          content_name: cart.contentNames.join(" + ") || "BUNDLE STIMULASI SPEECH DELAY",
+	          content_type: cart.contentType,
+	          num_items: cart.items.length,
+	          value: cart.value,
+	          currency: "IDR"
+	        };
+        if (extra) {
+          for (var key in extra) {
+            if (Object.prototype.hasOwnProperty.call(extra, key)) params[key] = extra[key];
+          }
+        }
+        return params;
+      }
+
+	    function ensurePixelAndTrack(eventName, params, attempt) {
+	      attempt = attempt || 0;
+      if (typeof window.fbq === "function") {
+        window.fbq("trackSingle", metaPixelId, eventName, params || metaPixelParams());
+        return;
+      }
+      if (attempt < 20) {
+        setTimeout(function () { ensurePixelAndTrack(eventName, params, attempt + 1); }, 250);
+      }
+    }
+
+		      var y = document.getElementById("footer-year"); if (y) y.textContent = new Date().getFullYear();
+
+      var $ = function (id) { return document.getElementById(id); };
+      var loadingEl = $("loading-overlay");
+      var submitErr = $("submit-error");
+
+      function showLoading() { loadingEl.classList.add("show"); }
+      function hideLoading() { loadingEl.classList.remove("show"); }
+      function showFieldError(fid, eid) { $(fid).classList.add("error"); $(eid).classList.add("show"); }
+      function clearFieldError(fid, eid) { $(fid).classList.remove("error"); $(eid).classList.remove("show"); }
+
+      function money(value) { return "Rp" + Number(value || 0).toLocaleString("id-ID"); }
+
+      function escapeHtml(value) {
+        return String(value || "").replace(/[&<>'"]/g, function (char) {
+          return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char];
+        });
+      }
+
+      function productImage(product) {
+        if (!product) return "";
+        if (product.imageUrl) return product.imageUrl;
+        if (product.thumbnailUrl) return product.thumbnailUrl;
+        if (product.image) return product.image;
+        if (product.coverImageUrl) return product.coverImageUrl;
+        if (product.images && product.images.length) {
+          if (typeof product.images[0] === "string") return product.images[0];
+          return product.images[0].url || product.images[0].imageUrl || product.images[0].src || "";
+        }
+        return "";
+      }
+
+      function orderBumpData() {
+        var product = store && store.products && store.products[1];
+        var priceOption = store && store.bundlePriceOptions && store.bundlePriceOptions[1];
+        if (!product || !priceOption || !priceOption.uniqueId) return null;
+        var variant = (product.variants && product.variants[0]) || {};
+        return {
+          product: product,
+          priceOption: priceOption,
+          normalPrice: Number(variant.price || 0),
+          promoPrice: Number(priceOption.price || 0),
+          image: productImage(product)
+        };
+      }
+
+	      function orderBumpChecked() {
+	        var input = $("order-bump-check");
+	        return !!(input && input.checked && orderBumpData());
+	      }
+
+	      function cartState(options) {
+	        options = options || {};
+	        var items = [];
+	        var contentIds = [];
+	        var contentNames = [];
+	        var value = 0;
+	        var bundlePriceOptions = [];
+	        var variants = [];
+
+	        function addItem(item) {
+	          if (!item || !item.product) return;
+	          items.push(item);
+	          contentNames.push(item.product.publicName || item.product.name || "Produk");
+	          if (item.id) contentIds.push(String(item.id));
+	          value += Number(item.price || 0);
+	          if (item.type === "bundle") {
+	            bundlePriceOptions.push({ uniqueId: item.id, quantity: 1, price: Number(item.price || 0) });
+	          }
+	          if (item.type === "product") {
+	            variants.push({ uniqueId: item.id, quantity: 1, price: Number(item.price || 0) });
+	          }
+	        }
+
+	        var product = store && store.products && store.products[0];
+	        if (product) {
+	          var variant = (product.variants && product.variants[0]) || {};
+	          var priceOption = (store.bundlePriceOptions && store.bundlePriceOptions[0]) || null;
+	          addItem({
+	            type: priceOption && priceOption.uniqueId ? "bundle" : "product",
+	            product: product,
+	            id: priceOption && priceOption.uniqueId ? priceOption.uniqueId : variant.uniqueId || product.uniqueId,
+	            price: priceOption && priceOption.uniqueId ? Number(priceOption.price || 0) : Number(variant.price || product.price || 0)
+	          });
+	        }
+
+	        var bump = options.includeBump === false ? null : orderBumpChecked() ? orderBumpData() : null;
+	        if (bump) {
+	          addItem({
+	            type: "bundle",
+	            product: bump.product,
+	            id: bump.priceOption.uniqueId,
+	            price: bump.promoPrice
+	          });
+	        }
+
+	        var analyticsPayload = {};
+	        if (bundlePriceOptions.length) analyticsPayload.bundlePriceOptions = bundlePriceOptions;
+	        if (variants.length) analyticsPayload.variants = variants;
+	        return {
+	          items: items,
+	          contentIds: contentIds,
+	          contentNames: contentNames,
+	          contentType: bundlePriceOptions.length ? "product_group" : "product",
+	          value: value,
+	          analyticsPayload: analyticsPayload
+	        };
+	      }
+
+      // === 1. PRODUK ===
+      function renderProduct() {
+        var el = $("product-content");
+        if (!store || !store.products || !store.products.length) {
+          el.innerHTML = '<div class="empty-state">Produk belum dipilih</div>';
+          return;
+        }
+        var product = store.products[0];
+        var priceOption = (store.bundlePriceOptions && store.bundlePriceOptions[0]) || null;
+        var variant = (product.variants && product.variants[0]) || {}; var normalPrice = Number(variant.price || product.price || 0);
+        var promoPrice = priceOption ? Number(priceOption.price) : normalPrice;
+        var hasPromo = priceOption && promoPrice !== normalPrice;
+        var priceLabel = priceOption ? priceOption.name : "Harga";
+
+        var priceHtml = hasPromo
+          ? '<span class="price-normal">' + money(normalPrice) + '</span><span class="price-promo">' + money(promoPrice) + '</span>'
+          : '<span class="price-promo">' + money(promoPrice) + '</span>';
+
+        el.innerHTML =
+          '<div class="product-summary">' +
+            '<div class="product-info">' +
+              '<div class="product-name">' + escapeHtml(product.name || "Produk") + '</div>' +
+              '<div class="product-qty">' + priceLabel + ' &middot; Qty: 1</div>' +
+            '</div>' +
+            '<div class="product-price">' + priceHtml + '</div>' +
+          '</div>';
+      }
+
+      function checkoutItems() {
+        var product = store.products[0];
+        var variant = (product.variants && product.variants[0]) || {};
+        var priceOption = (store.bundlePriceOptions && store.bundlePriceOptions[0]) || null;
+        var items;
+
+        if (priceOption && priceOption.uniqueId) {
+          items = [{
+            type: "bundle",
+            bundlePriceOptionUniqueId: priceOption.uniqueId,
+            quantity: 1
+          }];
+        } else {
+          items = [{
+            type: "product",
+            variantUniqueId: variant.uniqueId || product.uniqueId,
+            quantity: 1
+          }];
+        }
+
+        var bump = orderBumpData();
+        if (orderBumpChecked() && bump) {
+          items.push({
+            type: "bundle",
+            bundlePriceOptionUniqueId: bump.priceOption.uniqueId,
+            quantity: 1
+          });
+        }
+
+        return items;
+      }
+
+      function renderOrderBump() {
+        var card = $("order-bump-card");
+        var el = $("order-bump-content");
+        var bump = orderBumpData();
+        if (!card || !el || !bump) {
+          if (card) card.style.display = "none";
+          return;
+        }
+
+        var hasPromo = bump.normalPrice && bump.promoPrice && bump.promoPrice !== bump.normalPrice;
+        var priceHtml = hasPromo
+          ? '<span class="normal">' + money(bump.normalPrice) + '</span><span class="promo">' + money(bump.promoPrice) + '</span>'
+          : '<span class="promo">' + money(bump.promoPrice) + '</span>';
+        var imageHtml = bump.image ? '<img class="order-bump-image" src="' + escapeHtml(bump.image) + '" alt="" />' : '';
+
+        card.style.display = "block";
+        el.innerHTML =
+          '<div class="order-bump-content">' +
+            imageHtml +
+            '<div class="order-bump-info">' +
+              '<div class="order-bump-badge">Penawaran Khusus Checkout</div>' +
+              '<div class="order-bump-name">Lengkapi pesanan Bunda dengan ' + escapeHtml(bump.product.name || "produk tambahan") + '</div>' +
+              '<div class="order-bump-desc">Tambahan praktis untuk membantu Bunda punya arahan latihan yang lebih rapi, konsisten, dan mudah dipakai di rumah.</div>' +
+              '<ul class="order-bump-benefits">' +
+                '<li>✓ Membantu Bunda mulai tanpa bingung</li>' +
+                '<li>✓ Bisa dipakai untuk latihan harian</li>' +
+                '<li>✓ Cocok jadi pendamping materi utama</li>' +
+              '</ul>' +
+              '<div class="order-bump-price">' + priceHtml + '</div>' +
+              '<div class="order-bump-note">Harga khusus ini hanya tersedia di halaman checkout ini.</div>' +
+              '<label class="order-bump-check" for="order-bump-check">' +
+                '<input type="checkbox" id="order-bump-check" />' +
+                '<span>Ya, tambahkan ke pesanan saya</span>' +
+              '</label>' +
+            '</div>' +
+          '</div>';
+
+	        $("order-bump-check").addEventListener("change", loadSummary);
+      }
+
+      // === 2. PEMBAYARAN ===
+      function renderPaymentMethods() {
+        var el = $("payment-content");
+        var options = (store && store.paymentMethodOptions) || [];
+        if (!options.length) {
+          el.innerHTML = '<div class="empty-state">Metode pembayaran belum tersedia</div>';
+          return;
+        }
+
+        // Sort: QRIS first
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].value === "qris" && i > 0) {
+            var qris = options.splice(i, 1)[0];
+            options.unshift(qris);
+            break;
+          }
+        }
+
+        var html = '<div class="payment-grid" id="payment-grid">';
+        options.forEach(function (opt, i) {
+          html +=
+            '<input type="radio" name="payment" value="' + opt.value + '" id="pay-' + i + '" class="payment-option" />' +
+            '<label for="pay-' + i + '" class="payment-label">' +
+              (opt.logoUrl ? '<img src="' + opt.logoUrl + '" alt="" />' : '') +
+              '<span>' + opt.display + '</span>' +
+            '</label>';
+        });
+        html += '</div>';
+        el.innerHTML = html;
+      }
+
+      // Payment change — event delegation (tahan DOM manipulasi)
+      document.addEventListener("change", function (e) {
+        if (e.target && e.target.name === "payment") {
+          loadSummary();
+        }
+      });
+
+      // === 3. DISKON ===
+      var appliedDiscount = null;
+
+      $("discount-btn").addEventListener("click", function () {
+        var code = $("discount-code").value.trim();
+        var msgEl = $("discount-msg");
+        if (!code) { msgEl.textContent = "Masukkan kode diskon dulu"; msgEl.className = "discount-msg error"; return; }
+
+        msgEl.textContent = "Memvalidasi…"; msgEl.className = "discount-msg";
+
+        if (!window.Scalev || !window.Scalev.checkout || typeof window.Scalev.checkout.validateDiscount !== "function") {
+          msgEl.textContent = "Gagal validasi diskon"; msgEl.className = "discount-msg error"; return;
+        }
+        try {
+          window.Scalev.checkout.validateDiscount({ discountCode: code }).then(function (result) {
+            if (result && result.valid) {
+              appliedDiscount = code;
+              msgEl.textContent = "Kode diskon valid! Diskon diterapkan.";
+              msgEl.className = "discount-msg success";
+            } else {
+              appliedDiscount = null;
+              msgEl.textContent = "Kode diskon tidak valid atau sudah kadaluarsa";
+              msgEl.className = "discount-msg error";
+            }
+            loadSummary();
+          }).catch(function () {
+            appliedDiscount = null;
+            msgEl.textContent = "Gagal validasi diskon"; msgEl.className = "discount-msg error";
+            loadSummary();
+          });
+        } catch (e) {
+          appliedDiscount = null;
+          msgEl.textContent = "Gagal validasi diskon"; msgEl.className = "discount-msg error";
+          loadSummary();
+        }
+      });
+
+      // === 4. RINGKASAN ===
+      function loadSummary() {
+        var el = $("summary-content");
+        var paymentRadio = document.querySelector('input[name="payment"]:checked');
+        if (!paymentRadio || !store || !store.products || !store.products.length) {
+          el.innerHTML = '<div class="empty-state">Pilih metode pembayaran untuk melihat ringkasan</div>';
+          return;
+        }
+
+        var product = store.products[0];
+        var priceOption = (store.bundlePriceOptions && store.bundlePriceOptions[0]) || null;
+        var variant = (product.variants && product.variants[0]) || {}; var normalPrice = Number(variant.price || product.price || 0);
+        var promoPrice = priceOption ? Number(priceOption.price) : normalPrice;
+        var hasPromo = priceOption && promoPrice !== normalPrice;
+        var bump = orderBumpChecked() ? orderBumpData() : null;
+        var finalPrice = promoPrice;
+        if (bump) finalPrice += bump.promoPrice;
+
+        var html = '';
+        if (hasPromo) {
+          html += '<div class="summary-row"><span>Harga Normal</span><span class="price-del">' + money(normalPrice) + '</span></div>';
+          html += '<div class="summary-row"><span>Harga Promo</span><span>' + money(promoPrice) + '</span></div>';
+        } else {
+          html += '<div class="summary-row"><span>Subtotal (1 item)</span><span>' + money(promoPrice) + '</span></div>';
+        }
+        if (bump) {
+          html += '<div class="summary-row"><span>' + escapeHtml(bump.product.name || "Produk tambahan") + '</span><span>' + money(bump.promoPrice) + '</span></div>';
+        }
+        if (appliedDiscount) {
+          html += '<div class="summary-row"><span>Kode Diskon</span><span style="color:var(--success);">' + appliedDiscount + '</span></div>';
+        }
+        html += '<div class="summary-row total"><span>Total</span><span>' + money(finalPrice) + '</span></div>';
+        el.innerHTML = html;
+      }
+
+      // === 5. VALIDASI ===
+      function validateForm() {
+        var valid = true;
+        if (!$("cust-name").value.trim()) { showFieldError("cust-name", "err-name"); valid = false; }
+        if (!$("cust-phone").value.trim()) { showFieldError("cust-phone", "err-phone"); valid = false; }
+        var email = $("cust-email").value.trim();
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showFieldError("cust-email", "err-email"); valid = false; }
+        if (!document.querySelector('input[name="payment"]:checked')) {
+          submitErr.textContent = "Pilih metode pembayaran dulu ya, Bunda.";
+          submitErr.style.display = "block";
+          valid = false;
+        }
+        return valid;
+      }
+
+      ["cust-name", "cust-phone", "cust-email"].forEach(function (fid) {
+        $(fid).addEventListener("input", function () {
+          clearFieldError(fid, "err-" + fid.split("-").slice(1).join("-"));
+        });
+      });
+
+      // === 6. SUBMIT ===
+      $("submit-btn").addEventListener("click", function () {
+        submitErr.style.display = "none";
+        if (!validateForm()) return;
+        if (!store || !store.products || !store.products.length) {
+          submitErr.textContent = "Data produk belum tersedia."; submitErr.style.display = "block"; return;
+        }
+
+        var payload = {
+          customer: {
+            name: $("cust-name").value.trim(),
+            phone: $("cust-phone").value.trim(),
+            email: $("cust-email").value.trim()
+          },
+          items: checkoutItems(),
+          paymentMethod: document.querySelector('input[name="payment"]:checked').value
+        };
+        if (appliedDiscount) payload.discountCode = appliedDiscount;
+
+	        $("submit-btn").disabled = true;
+        showLoading();
+
+        if (!window.Scalev || !window.Scalev.checkout || typeof window.Scalev.checkout.createOrder !== "function") {
+          hideLoading();
+          $("submit-btn").disabled = false;
+          submitErr.textContent = "Checkout belum tersedia. Coba lagi nanti.";
+          submitErr.style.display = "block";
+          return;
+        }
+
+        try {
+          window.Scalev.checkout.createOrder(payload).then(function (order) {
+            hideLoading();
+            $("submit-btn").disabled = false;
+            if (!order) { submitErr.textContent = "Gagal membuat pesanan."; submitErr.style.display = "block"; return; }
+            showSuccess(order);
+          }).catch(function (err) {
+            hideLoading();
+            $("submit-btn").disabled = false;
+            submitErr.textContent = (err && err.message) || "Gagal membuat pesanan. Coba lagi.";
+            submitErr.style.display = "block";
+          });
+        } catch (e) {
+          hideLoading();
+          $("submit-btn").disabled = false;
+          submitErr.textContent = "Gagal membuat pesanan. Coba lagi.";
+          submitErr.style.display = "block";
+        }
+      });
+
+      // === 7. REDIRECT AFTER ORDER ===
+      var SCALEV_HOSTS = ["scalev.com", "scalev.id", "app.scalev.id", "app.scalev.com"];
+
+      function publicOrderUrl(order) {
+        if (order.publicOrderUrl) return order.publicOrderUrl;
+        return new URL("/o/" + order.secretSlug, window.location.origin).toString();
+      }
+
+      function paymentInstructionUrl(order) {
+        if (order.status === "draft") return publicOrderUrl(order);
+        if (order.paymentUrl) return order.paymentUrl;
+        var url = new URL(publicOrderUrl(order));
+        url.pathname = url.pathname.replace(/\/$/, "") + "/success";
+        return url.toString();
+      }
+
+      function whatsappUrl(phone, order) {
+        var clean = String(phone || "").replace(/[^\d]/g, "");
+        var msg = order.chatMessage || "";
+        return "https://api.whatsapp.com/send/?phone=" + clean + "&text=" + encodeURIComponent(msg);
+      }
+
+      function navigateAfterOrder(url) {
+        function go() {
+          if (window.self !== window.top) { window.parent.postMessage(url, "*"); return; }
+          window.location.assign(url);
+        }
+        if (pixelDelayMs > 0) { setTimeout(go, pixelDelayMs); } else { go(); }
+      }
+
+      function redirectAfterOrder(config) {
+        var finalType = config.type || "success_page";
+
+        if (finalType === "success_page") {
+          return navigateAfterOrder(paymentInstructionUrl(config.order));
+        }
+        if (finalType === "direct_to_whatsapp") {
+          var phone = config.order.handlerPhone;
+          return navigateAfterOrder(phone ? whatsappUrl(phone, config.order) : publicOrderUrl(config.order));
+        }
+        if (finalType === "direct_to_custom_whatsapp") {
+          return navigateAfterOrder(whatsappUrl(config.customWhatsappPhone, config.order));
+        }
+        if (finalType === "other_page") {
+          return navigateAfterOrder(config.otherPagePath || "/");
+        }
+        if (finalType === "custom_url") {
+          return navigateAfterOrder(config.customUrl || "/");
+        }
+        // fallback: order_page
+        return navigateAfterOrder(publicOrderUrl(config.order));
+      }
+
+      function showSuccess(order) {
+        redirectAfterOrder({
+          type: (afterCheckout && afterCheckout.type) || "success_page",
+          order: order,
+          customWhatsappPhone: afterCheckout && afterCheckout.customWhatsappPhone,
+          otherPagePath: afterCheckout && afterCheckout.otherPagePath,
+          customUrl: afterCheckout && afterCheckout.customUrl
+        });
+      }
+
+      // === INIT ===
+	      renderProduct();
+	      renderPaymentMethods();
+	      renderOrderBump();
+	      try { ensurePixelAndTrack("AddToCart", metaPixelParams(null, { includeBump: false })); } catch (_) {}
+	    })();
+  </script>
+</body>
+</html>
