@@ -1,6 +1,6 @@
-# Add repository owners after GitHub organization/user is known.
-# Example:
-# * @your-github-username
-# /assets/templates/ @your-github-username
-# /references/ @your-github-username
-# /scripts/ @your-github-username
+* @ramadhanidiwanda-alt
+
+/assets/templates/ @ramadhanidiwanda-alt
+/references/ @ramadhanidiwanda-alt
+/scripts/ @ramadhanidiwanda-alt
+.github/ @ramadhanidiwanda-alt
