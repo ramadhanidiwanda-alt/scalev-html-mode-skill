@@ -141,3 +141,9 @@ Fix: define the card column gap as a base rule, e.g. `.left-col { display: grid;
 Cause: flex children containing long payment labels or product names lack `min-width: 0`, so text refuses to shrink and can overflow the card.
 
 Fix: add `min-width: 0` and `overflow-wrap: anywhere` to text children such as `.payment-name` and `.summary-row span:first-child`. Keep prices with `flex: 0 0 auto`.
+
+## Order summary does not show struck-through normal price
+
+Cause: product and order bump cards render `normalPrice` plus `promoPrice`, but `renderSummary()` only renders `promoPrice` in each line item. Buyers cannot see the promo price is applied in the final order review.
+
+Fix: use a summary price helper that renders struck-through `normalPrice` when it differs from `promoPrice`, then the promo price. Apply it to main product and order bump rows. Keep the total row as the final payable amount only to avoid confusion.

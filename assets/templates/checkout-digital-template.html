@@ -109,6 +109,9 @@
     .summary-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--color-muted); font-weight: 800; }
     .summary-row span:first-child { min-width: 0; overflow-wrap: anywhere; }
     .summary-row strong { flex: 0 0 auto; text-align: right; }
+    .summary-price { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex: 0 0 auto; text-align: right; }
+    .summary-price .normal { color: var(--color-muted); font-size: 0.82rem; font-weight: 800; text-decoration: line-through; }
+    .summary-price .promo { color: var(--color-heading); font-weight: 900; }
     .summary-row.total { padding-top: 12px; border-top: 1px solid var(--color-border); color: var(--color-heading); font-size: 1.12rem; }
     .summary-row.total strong { font-family: var(--font-heading); font-size: 1.6rem; letter-spacing: -0.04em; }
     .loading-overlay { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; background: rgba(238,242,255,0.78); backdrop-filter: blur(8px); }
@@ -362,11 +365,16 @@
       var bump = orderBumpChecked() ? orderBumpData() : null;
       var subtotal = main.promoPrice + (bump ? bump.promoPrice : 0);
       var discountLabel = appliedDiscount ? escapeHtml(appliedDiscount.code || "Diskon") : "";
-      var html = '<div class="summary-row"><span>' + escapeHtml(main.title) + '</span><strong>' + rupiah(main.promoPrice) + '</strong></div>';
-      if (bump) html += '<div class="summary-row"><span>' + escapeHtml(bump.title) + '</span><strong>' + rupiah(bump.promoPrice) + '</strong></div>';
+      var html = '<div class="summary-row"><span>' + escapeHtml(main.title) + '</span>' + summaryPriceHtml(main.normalPrice, main.promoPrice) + '</div>';
+      if (bump) html += '<div class="summary-row"><span>' + escapeHtml(bump.title) + '</span>' + summaryPriceHtml(bump.normalPrice, bump.promoPrice) + '</div>';
       if (appliedDiscount) html += '<div class="summary-row"><span>' + discountLabel + '</span><strong>Dipakai</strong></div>';
       html += '<div class="summary-row total"><span>Total</span><strong>' + rupiah(subtotal) + '</strong></div>';
       $("summary-content").innerHTML = html;
+    }
+
+    function summaryPriceHtml(normalPrice, promoPrice) {
+      var hasPromo = normalPrice && promoPrice && normalPrice !== promoPrice;
+      return '<span class="summary-price">' + (hasPromo ? '<span class="normal">' + rupiah(normalPrice) + '</span>' : '') + '<strong class="promo">' + rupiah(promoPrice) + '</strong></span>';
     }
 
     function addToCartParams() {
