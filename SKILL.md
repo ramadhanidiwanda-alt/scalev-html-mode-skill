@@ -32,7 +32,9 @@ Use this skill for Scalev HTML Mode landing pages and checkout pages. Keep outpu
 6. Validate required inputs before `createOrder()`.
 7. Submit order through `Scalev.checkout.createOrder(payload)`.
 8. Redirect through Scalev after-checkout setting.
-9. Run `node scripts/check-html-js.mjs <file.html>` when editing local HTML.
+9. Confirm checkout DOM render targets match JS lookups (`id="product-content"`, `id="payment-content"`, `id="summary-content"`, and order bump target IDs when used).
+10. Keep checkout spacing responsive: base mobile card gaps, safe coupon row layout, and no flex text overflow.
+11. Run `node scripts/check-html-js.mjs <file.html>` when editing local HTML.
 
 ## Starter Templates
 
@@ -150,4 +152,12 @@ Run this syntax check after changing generated or local HTML with inline scripts
 node scripts/check-html-js.mjs path/to/page.html
 ```
 
-This checks inline `<script>` blocks for JavaScript syntax errors. It does not verify Scalev runtime data, payment behavior, or dashboard configuration.
+This checks inline `<script>` blocks for JavaScript syntax errors and common checkout DOM contract mismatches. It does not verify Scalev runtime data, payment behavior, or dashboard configuration.
+
+For checkout QA, confirm all of these render before delivery:
+
+- Product summary.
+- Payment methods from `store.paymentMethodOptions`.
+- Client-side order summary.
+- Order bump when `store.products[1]` plus `store.bundlePriceOptions[1]` exist.
+- Coupon row on desktop and mobile.

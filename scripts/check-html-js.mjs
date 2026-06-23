@@ -10,6 +10,23 @@ if (files.length === 0) {
 }
 
 const scriptPattern = /<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi;
+
+const domIdLookupPattern = /\$\(["']([^"']+)["']\)/g;
+const checkoutSignalPattern = /\b(createOrder|renderProduct|renderPaymentMethods|renderSummary|orderBumpData|checkoutItems)\b/;
+
+function hasIdTarget(html, id) {
+  return new RegExp(`\\bid=["']${id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}["']`).test(html);
+}
+
+function checkoutDomIdsUsed(script) {
+  if (!checkoutSignalPattern.test(script)) return [];
+  const ids = new Set();
+  for (const match of script.matchAll(domIdLookupPattern)) {
+    ids.add(match[1]);
+  }
+  return [...ids].filter((id) => /^(product-content|payment-content|summary-content|order-bump|order-bump-content|order-bump-card)$/.test(id));
+}
+
 let failed = false;
 
 for (const file of files) {
@@ -22,13 +39,21 @@ for (const file of files) {
   }
 
   scripts.forEach((match, index) => {
+    const script = match[1];
     try {
-      new vm.Script(match[1], { filename: `${file}#script${index + 1}` });
+      new vm.Script(script, { filename: `${file}#script${index + 1}` });
       console.log(`${file}: script ${index + 1} OK`);
     } catch (error) {
       failed = true;
       console.error(`${file}: script ${index + 1} failed`);
       console.error(error.message);
+    }
+
+    for (const id of checkoutDomIdsUsed(script)) {
+      if (!hasIdTarget(html, id)) {
+        failed = true;
+        console.error(`${file}: missing DOM target id="${id}" used by script ${index + 1}`);
+      }
     }
   });
 }

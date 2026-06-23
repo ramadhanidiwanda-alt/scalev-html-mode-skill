@@ -23,3 +23,23 @@ Mobile hero order for simple conversion:
 6. Proof strip
 
 Avoid placing mockup above headline on mobile unless visual recognition is stronger than copy.
+
+## Preview Grid Responsive Rule
+
+For product preview screenshots, especially PDF pages with readable text, use one column on mobile. Two columns below tablet width make page previews too narrow and reduce trust.
+
+Recommended pattern:
+
+```css
+.preview-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+
+@media (min-width: 720px) {
+  .preview-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (min-width: 900px) {
+  .preview-grid { grid-template-columns: repeat(4, 1fr); }
+}
+```
+
+If a sticky bottom CTA is present on mobile, avoid adding a second sticky top CTA unless the user explicitly requests it. Duplicate sticky CTAs reduce usable vertical space on small screens.

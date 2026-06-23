@@ -1,0 +1,15 @@
+<!doctype html>
+<html><body>
+  <div id="product-content"></div>
+  <div id="payment-content"></div>
+  <div id="summary-content"></div>
+  <div id="order-bump"></div>
+  <script>
+    function $(id) { return document.getElementById(id); }
+    function renderProduct() { $("product-content").innerHTML = "Product"; }
+    function renderPaymentMethods() { $("payment-content").innerHTML = "Payment"; }
+    function renderSummary() { $("summary-content").innerHTML = "Summary"; }
+    function renderOrderBump() { $("order-bump").innerHTML = "Bump"; }
+    window.Scalev.checkout.createOrder({});
+  </script>
+</body></html>

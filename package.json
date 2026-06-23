@@ -5,7 +5,7 @@
   "description": "Codex skill for building and reviewing custom Scalev HTML pages.",
   "type": "module",
   "scripts": {
-    "validate": "node scripts/check-html-js.mjs assets/templates/*.html"
+    "validate": "node scripts/check-html-js.mjs assets/templates/*.html && node scripts/check-html-js.test.mjs"
   },
   "engines": {
     "node": ">=20"
