@@ -111,3 +111,33 @@ Fix: andalkan browser Pixel (`fbq("trackSingle", ...)`) saja. Hapus `fetch()` ke
 
 Cause: template masih memakai title generik seperti `Scalev HTML Mode Page`, `Checkout`, atau `Landing Produk Digital`, dan belum punya meta description / Open Graph.
 Fix: ganti title dan meta sesuai produk sebelum import ke Scalev. Landing page pakai `robots` `index, follow`; checkout page pakai `robots` `noindex, nofollow` agar halaman checkout tidak masuk hasil pencarian.
+
+## Checkout blank even though script syntax is OK
+
+Cause: HTML render targets use `data-*` attributes such as `data-product-content`, but JS looks up IDs such as `$("product-content")`. `check-html-js.mjs` syntax validation can pass because the JavaScript is valid, but runtime render fails when `document.getElementById(...)` returns null.
+
+Fix: match the DOM contract exactly. If JS calls `$("product-content")`, HTML must contain `id="product-content"`. Same for `payment-content`, `summary-content`, and `order-bump` / `order-bump-content`. Run `node scripts/check-html-js.mjs <file.html>` after editing; the validator checks common checkout DOM target mismatches.
+
+## Checkout looks empty when opened as a local file
+
+Cause: Scalev runtime is only available inside Scalev HTML Mode. Opening the file directly means `window.Scalev.data.get()` is unavailable, so `store.products`, `store.bundlePriceOptions`, and `store.paymentMethodOptions` are missing.
+
+Fix: import into Scalev to test real data. For local visual QA, use demo mode only when `store` is missing, show a visible demo banner, and never override real Scalev runtime data.
+
+## Coupon button overflows or looks broken on desktop
+
+Cause: coupon button reuses a global submit button class with `width: 100%`, `margin-top`, or large padding, then sits inside a horizontal flex row.
+
+Fix: add a specific coupon class and selector, e.g. `.discount-row .discount-btn { width: auto; flex: 0 0 auto; }`, and stack the row only on small screens. Also set `.discount-row .input { min-width: 0; }`.
+
+## Checkout cards touch each other on mobile
+
+Cause: the card wrapper (often `.left-col`) gets `display: grid; gap: ...` only inside a desktop media query. On mobile, cards become normal block elements with no explicit gap.
+
+Fix: define the card column gap as a base rule, e.g. `.left-col { display: grid; gap: 16px; }`, then only change column layout at larger breakpoints.
+
+## Payment method or summary text overflows
+
+Cause: flex children containing long payment labels or product names lack `min-width: 0`, so text refuses to shrink and can overflow the card.
+
+Fix: add `min-width: 0` and `overflow-wrap: anywhere` to text children such as `.payment-name` and `.summary-row span:first-child`. Keep prices with `flex: 0 0 auto`.

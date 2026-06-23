@@ -81,9 +81,11 @@
     .payment-label:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(49,46,129,0.08); }
     .payment-option:focus-visible + .payment-label { outline: 3px solid var(--color-primary); outline-offset: 3px; }
     .payment-option:checked + .payment-label { border-color: var(--color-primary); box-shadow: 0 0 0 4px rgba(99,102,241,0.14); }
-    .payment-name { font-weight: 900; color: var(--color-heading); }
+    .payment-name { min-width: 0; font-weight: 900; color: var(--color-heading); overflow-wrap: anywhere; }
     .payment-pill { padding: 4px 8px; border-radius: 999px; background: var(--color-background); color: var(--color-primary-dark); font-size: 0.76rem; font-weight: 900; }
-    .discount-row { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    .discount-row { display: flex; gap: 10px; }
+    .discount-row .input { flex: 1; min-width: 0; }
+    .discount-row .discount-btn { width: auto; min-width: 96px; flex: 0 0 auto; }
     .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 13px 18px; border: 0; border-radius: 999px; font-weight: 900; text-decoration: none; transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, opacity 180ms ease; }
     .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(49,46,129,0.10); }
     .btn:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 4px; }
@@ -105,6 +107,8 @@
     .check-row input { width: 20px; height: 20px; margin-top: 3px; accent-color: var(--color-accent); }
     .summary { display: grid; gap: 10px; }
     .summary-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--color-muted); font-weight: 800; }
+    .summary-row span:first-child { min-width: 0; overflow-wrap: anywhere; }
+    .summary-row strong { flex: 0 0 auto; text-align: right; }
     .summary-row.total { padding-top: 12px; border-top: 1px solid var(--color-border); color: var(--color-heading); font-size: 1.12rem; }
     .summary-row.total strong { font-family: var(--font-heading); font-size: 1.6rem; letter-spacing: -0.04em; }
     .loading-overlay { display: none; position: fixed; inset: 0; z-index: 100; align-items: center; justify-content: center; background: rgba(238,242,255,0.78); backdrop-filter: blur(8px); }
@@ -117,12 +121,16 @@
       .layout { grid-template-columns: 1.05fr 0.95fr; align-items: start; }
       .sticky { position: sticky; top: 22px; }
       .product-top { grid-template-columns: 0.9fr 1.1fr; align-items: center; }
-      .discount-row { grid-template-columns: 1fr auto; }
+      .bump.show { grid-template-columns: 0.72fr 1fr; align-items: center; }
     }
     @media (max-width: 420px) {
       .page { width: min(100% - 24px, 1040px); }
       .card, .header-card { padding: 16px; }
       .promo-price { font-size: 1.7rem; }
+      .discount-row { flex-direction: column; }
+      .discount-row .discount-btn { width: 100%; }
+      .bump.show { grid-template-columns: 1fr; }
+      .bump-preview { min-height: 0; aspect-ratio: 16 / 9; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
@@ -171,7 +179,7 @@
           <h2 class="card-title"><span class="step" aria-hidden="true">4</span> Kode Diskon</h2>
           <div class="discount-row">
             <input class="input" id="discount-code" type="text" placeholder="Masukkan kode diskon jika ada" autocomplete="off" />
-            <button class="btn btn-secondary" id="discount-btn" type="button">Gunakan</button>
+            <button class="btn btn-secondary discount-btn" id="discount-btn" type="button">Gunakan</button>
           </div>
           <div id="discount-msg" class="alert" style="margin-top:12px;" role="status"></div>
         </div>
