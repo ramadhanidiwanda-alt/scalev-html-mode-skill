@@ -187,3 +187,21 @@ For checkout layouts with long product names, payment labels, or bundle names, a
 ```
 
 These prevent mobile overflow and preserve desktop layout.
+
+## Summary Price Display Pattern
+
+When the product card shows a normal price and promo price, the order summary should repeat that value cue for each line item. This helps buyers recognize the promo price is applied before they pay.
+
+Use a helper for summary item prices:
+
+```js
+function summaryPriceHtml(normalPrice, promoPrice) {
+  var hasPromo = normalPrice && promoPrice && normalPrice !== promoPrice;
+  return '<span class="summary-price">' +
+    (hasPromo ? '<span class="normal">' + rupiah(normalPrice) + '</span>' : '') +
+    '<strong class="promo">' + rupiah(promoPrice) + '</strong>' +
+    '</span>';
+}
+```
+
+Apply it to the main item and order bump item. Keep the total row as the final amount only; do not show a struck-through total unless the checkout has explicit discount math for the total.
