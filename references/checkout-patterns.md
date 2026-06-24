@@ -86,6 +86,64 @@ items.push({
 
 Do not submit bundle-priced order bump as `type: "product"`. That can charge the wrong amount.
 
+## Checkout Page-Load AddToCart Analytics
+
+When the user wants `AddToCart` to fire when a checkout page opens, do not hardcode a Pixel ID unless the user explicitly asks for one. Use the Pixel configured in Scalev by sending both the official Scalev analytics payload and a browser Pixel event after `fbq` is ready.
+
+Use Scalev runtime values for IDs and prices. `quantity` is `1` for digital bundle checkout pages unless the page has a buyer-facing quantity input.
+
+```js
+var addToCartAnalyticsTracked = false;
+var addToCartBrowserTracked = false;
+
+function addToCartAnalyticsPayload() {
+  var main = getMainProductData();
+  var payload = {
+    events: [{
+      eventName: "AddToCart",
+      parameters: { value: Number(main.promoPrice || main.normalPrice || 0), currency: "IDR" }
+    }]
+  };
+  if (main.variant && main.variant.uniqueId) {
+    payload.variants = [{ uniqueId: main.variant.uniqueId, quantity: 1, price: Number(main.promoPrice || main.normalPrice || 0) }];
+  }
+  if (main.priceOption && main.priceOption.uniqueId) {
+    payload.bundlePriceOptions = [{ uniqueId: main.priceOption.uniqueId, quantity: 1, price: Number(main.promoPrice || 0) }];
+  }
+  return payload;
+}
+
+function addToCartBrowserParams() {
+  var main = getMainProductData();
+  var params = {
+    content_name: main.title,
+    content_type: main.priceOption && main.priceOption.uniqueId ? "product_group" : "product",
+    currency: "IDR",
+    value: Number(main.promoPrice || main.normalPrice || 0)
+  };
+  if (main.variant && main.variant.uniqueId) params.content_ids = [main.variant.uniqueId];
+  return params;
+}
+
+function trackScalevAddToCart(attempt) {
+  attempt = attempt || 0;
+  if (!addToCartAnalyticsTracked && window.Scalev && window.Scalev.analytics && typeof window.Scalev.analytics.track === "function") {
+    addToCartAnalyticsTracked = true;
+    window.Scalev.analytics.track("facebook", addToCartAnalyticsPayload()).catch(function () {});
+  }
+  if (!addToCartBrowserTracked && typeof window.fbq === "function") {
+    window.fbq("track", "AddToCart", addToCartBrowserParams());
+    addToCartBrowserTracked = true;
+  }
+  if ((!addToCartAnalyticsTracked || !addToCartBrowserTracked) && attempt < 80) {
+    setTimeout(function () { trackScalevAddToCart(attempt + 1); }, 250);
+  }
+}
+
+trackScalevAddToCart(0);
+window.addEventListener("load", function () { trackScalevAddToCart(0); });
+```
+
 ### Mobile Layout
 
 On mobile, stack order bump image and copy vertically. Avoid side-by-side layout because it compresses the copy and hurts readability.

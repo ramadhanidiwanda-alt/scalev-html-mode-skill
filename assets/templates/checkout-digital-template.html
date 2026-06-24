@@ -215,14 +215,17 @@
       orderBumpFallbackDescription: "Tambahan hook siap pakai untuk Reels, TikTok, dan caption promo.",
       qrisFirst: true,
       pixelDelayMs: 600,
-      metaPixelId: "",
-      trackAddToCartOnLoad: false
+      trackAddToCartOnLoad: false,
+      addToCartEventName: "AddToCart",
+      addToCartRetryLimit: 80
     };
 
     var scalev = window.Scalev && window.Scalev.data && window.Scalev.data.get ? window.Scalev.data.get() : null;
     var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
     var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
     var appliedDiscount = null;
+    var addToCartAnalyticsTracked = false;
+    var addToCartBrowserTracked = false;
 
     function $(id) { return document.getElementById(id); }
 
@@ -377,27 +380,43 @@
       return '<span class="summary-price">' + (hasPromo ? '<span class="normal">' + rupiah(normalPrice) + '</span>' : '') + '<strong class="promo">' + rupiah(promoPrice) + '</strong></span>';
     }
 
-    function addToCartParams() {
+    function addToCartAnalyticsPayload() {
       var main = getMainProductData();
-      var contentId = main.variant.uniqueId || main.product.uniqueId || main.priceOption && main.priceOption.uniqueId || "";
-      return {
+      var payload = { events: [{ eventName: CHECKOUT_TEMPLATE_CONFIG.addToCartEventName || "AddToCart", parameters: { value: Number(main.promoPrice || main.normalPrice || 0), currency: "IDR" } }] };
+      if (main.variant && main.variant.uniqueId) {
+        payload.variants = [{ uniqueId: main.variant.uniqueId, quantity: 1, price: Number(main.promoPrice || main.normalPrice || 0) }];
+      }
+      if (main.priceOption && main.priceOption.uniqueId) {
+        payload.bundlePriceOptions = [{ uniqueId: main.priceOption.uniqueId, quantity: 1, price: Number(main.promoPrice || 0) }];
+      }
+      return payload;
+    }
+
+    function addToCartBrowserParams() {
+      var main = getMainProductData();
+      var params = {
         content_name: main.title,
-        content_ids: contentId ? [contentId] : [],
         content_type: main.priceOption ? "product_group" : "product",
-        value: main.promoPrice,
+        value: Number(main.promoPrice || main.normalPrice || 0),
         currency: "IDR"
       };
+      if (main.variant && main.variant.uniqueId) params.content_ids = [main.variant.uniqueId];
+      return params;
     }
 
     function trackAddToCart(attempt) {
-      var pixelId = CHECKOUT_TEMPLATE_CONFIG.metaPixelId;
-      if (!CHECKOUT_TEMPLATE_CONFIG.trackAddToCartOnLoad || !pixelId) return;
-      if (typeof window.fbq === "function") {
-        window.fbq("trackSingle", pixelId, "AddToCart", addToCartParams());
-        return;
+      if (!CHECKOUT_TEMPLATE_CONFIG.trackAddToCartOnLoad) return;
+      attempt = attempt || 0;
+      if (!addToCartAnalyticsTracked && window.Scalev && window.Scalev.analytics && typeof window.Scalev.analytics.track === "function") {
+        addToCartAnalyticsTracked = true;
+        window.Scalev.analytics.track("facebook", addToCartAnalyticsPayload()).catch(function () {});
       }
-      if ((attempt || 0) < 20) {
-        setTimeout(function () { trackAddToCart((attempt || 0) + 1); }, 250);
+      if (!addToCartBrowserTracked && typeof window.fbq === "function") {
+        window.fbq("track", CHECKOUT_TEMPLATE_CONFIG.addToCartEventName || "AddToCart", addToCartBrowserParams());
+        addToCartBrowserTracked = true;
+      }
+      if ((!addToCartAnalyticsTracked || !addToCartBrowserTracked) && attempt < CHECKOUT_TEMPLATE_CONFIG.addToCartRetryLimit) {
+        setTimeout(function () { trackAddToCart(attempt + 1); }, 250);
       }
     }
 
@@ -532,6 +551,7 @@
     renderPaymentMethods();
     renderSummary();
     trackAddToCart(0);
+    window.addEventListener("load", function () { trackAddToCart(0); });
   </script>
 </body>
 </html>
