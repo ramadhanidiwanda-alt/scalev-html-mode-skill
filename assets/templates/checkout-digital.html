@@ -64,8 +64,11 @@
     var store = scalev && scalev.store ? scalev.store : { products: [], bundlePriceOptions: [], paymentMethodOptions: [] };
     var afterCheckout = scalev && scalev.afterCheckout ? scalev.afterCheckout : {};
     var pixelDelayMs = 600;
-    var metaPixelId = "";
     var trackAddToCartOnLoad = false;
+    var addToCartEventName = "AddToCart";
+    var addToCartRetryLimit = 80;
+    var addToCartAnalyticsTracked = false;
+    var addToCartBrowserTracked = false;
 
     function rupiah(value) {
       return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(Number(value || 0));
@@ -133,25 +136,41 @@
     document.getElementById("productDescription").textContent = product.description || "Isi data untuk membuat pesanan.";
     document.getElementById("total").textContent = rupiah(finalPrice);
 
-    function addToCartParams() {
-      var contentId = variant.uniqueId || product.uniqueId || priceOption && priceOption.uniqueId || "";
-      return {
+    function addToCartAnalyticsPayload() {
+      var payload = { events: [{ eventName: addToCartEventName, parameters: { value: Number(finalPrice || 0), currency: "IDR" } }] };
+      if (variant && variant.uniqueId) {
+        payload.variants = [{ uniqueId: variant.uniqueId, quantity: 1, price: Number(finalPrice || 0) }];
+      }
+      if (priceOption && priceOption.uniqueId) {
+        payload.bundlePriceOptions = [{ uniqueId: priceOption.uniqueId, quantity: 1, price: Number(finalPrice || 0) }];
+      }
+      return payload;
+    }
+
+    function addToCartBrowserParams() {
+      var params = {
         content_name: product.name || "Produk Digital",
-        content_ids: contentId ? [contentId] : [],
         content_type: priceOption ? "product_group" : "product",
-        value: finalPrice,
+        value: Number(finalPrice || 0),
         currency: "IDR"
       };
+      if (variant && variant.uniqueId) params.content_ids = [variant.uniqueId];
+      return params;
     }
 
     function trackAddToCart(attempt) {
-      if (!trackAddToCartOnLoad || !metaPixelId) return;
-      if (typeof window.fbq === "function") {
-        window.fbq("trackSingle", metaPixelId, "AddToCart", addToCartParams());
-        return;
+      if (!trackAddToCartOnLoad) return;
+      attempt = attempt || 0;
+      if (!addToCartAnalyticsTracked && window.Scalev && window.Scalev.analytics && typeof window.Scalev.analytics.track === "function") {
+        addToCartAnalyticsTracked = true;
+        window.Scalev.analytics.track("facebook", addToCartAnalyticsPayload()).catch(function() {});
       }
-      if ((attempt || 0) < 20) {
-        setTimeout(function() { trackAddToCart((attempt || 0) + 1); }, 250);
+      if (!addToCartBrowserTracked && typeof window.fbq === "function") {
+        window.fbq("track", addToCartEventName, addToCartBrowserParams());
+        addToCartBrowserTracked = true;
+      }
+      if ((!addToCartAnalyticsTracked || !addToCartBrowserTracked) && attempt < addToCartRetryLimit) {
+        setTimeout(function() { trackAddToCart(attempt + 1); }, 250);
       }
     }
 
@@ -189,6 +208,7 @@
     });
 
     trackAddToCart(0);
+    window.addEventListener("load", function() { trackAddToCart(0); });
   </script>
 </body>
 </html>

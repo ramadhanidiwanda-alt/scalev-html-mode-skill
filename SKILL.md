@@ -119,6 +119,7 @@ Update client-side summary when checkbox changes. Total should equal main promo 
 - Pattern: `setTimeout(function() { window.location.assign(url); }, pixelDelayMs);`
 - For iframe: `setTimeout(function() { window.parent.postMessage(url, "*"); }, pixelDelayMs);`
 - `Scalev.data.get()` currently does not expose dashboard page-event settings. Do not assume `page.events`, `analyticsEvents`, or similar fields exist.
+- For non-purchase custom events that should use the dashboard Pixel (for example checkout page-load `AddToCart`), prefer both official Scalev analytics and browser Pixel: call `Scalev.analytics.track("facebook", payload)` with `events: [{ eventName, parameters }]`, and call `fbq("track", eventName, params)` after `fbq` is ready. Do not hardcode Pixel ID for this pattern; `fbq("track")` uses the Pixel initialized by Scalev.
 - If user explicitly asks for a specific Meta Pixel ID and event (example: page open = `AddToCart`), hardcode only that requested event + pixel ID in custom HTML.
 - For explicit Meta Pixel events, prefer `fbq("trackSingle", pixelId, eventName, params)` so event targets that exact Pixel ID without re-initializing Scalev pixel base code.
 - Do not call `fbq("init", pixelId)` again when Scalev already provides `fbq`; re-init can conflict and stop events.

@@ -69,6 +69,11 @@ Fix: jika user eksplisit memberi Pixel ID dan event (misal `AddToCart` saat hala
 Cause: payload analytics salah, misalnya `{ event: "AddToCart" }`. Dokumentasi resmi Scalev mensyaratkan payload camelCase dengan `events: [{ eventName, parameters }]`.
 Fix: panggil `Scalev.analytics.track(provider, { variants, bundlePriceOptions, events: [{ eventName: eventName, parameters: { value, currency: "IDR" } }] })`. Jangan gunakan top-level `event` / `event_name`.
 
+## AddToCart return sent tapi hanya PageView muncul di Meta
+
+Cause: `Scalev.analytics.track("facebook", payload)` berhasil diterima runtime (`sent`), tetapi Meta Test Events hanya menampilkan event browser dari Pixel yang sudah di-init Scalev. `Scalev.analytics.track` saja bisa tidak terlihat sebagai browser Pixel event.
+Fix: untuk checkout page-load `AddToCart` tanpa hardcode Pixel ID, kirim dua jalur: `Scalev.analytics.track("facebook", payload)` untuk jalur Scalev/server, lalu setelah `window.fbq` siap panggil `fbq("track", "AddToCart", params)`. Jangan pakai `trackSingle` kecuali user eksplisit memberi Pixel ID. Gunakan guard agar event hanya terkirim sekali per page load.
+
 ## Page-load analytics silent fail
 
 Cause: `track()` memakai helper DOM seperti `$()` sebelum helper tersebut didefinisikan. Karena error dibungkus `try/catch`, event gagal tanpa pesan error.
@@ -92,7 +97,7 @@ Fix: gunakan polling/retry untuk page-load event. Contoh:
 function ensurePixelAndTrack(eventName, params, attempt) {
   attempt = attempt || 0;
   if (typeof window.fbq === "function") {
-    window.fbq("trackSingle", pixelId, eventName, params);
+    window.fbq("track", eventName, params);
     return;
   }
   if (attempt < 20) {
@@ -102,10 +107,10 @@ function ensurePixelAndTrack(eventName, params, attempt) {
 ```
 Event setelah interaksi user (submit, klik) tidak perlu retry karena `fbq` pasti sudah siap.
 
-## Server relay Scalev analytics tidak diperlukan
+## Jangan panggil endpoint analytics privat
 
 Observation: custom HTML mengirim event ke `https://api.scalev.com/v3/stores/{store_id}/public/analytics/meta/events` bersamaan dengan browser Pixel. Ini bisa bikin event dobel di Meta Ads Manager kalau dedup tidak sempurna, dan menambah kompleksitas tanpa manfaat jelas.
-Fix: andalkan browser Pixel (`fbq("trackSingle", ...)`) saja. Hapus `fetch()` ke endpoint analytics Scalev, `eventIdFor()`, dan `cookieValue()` untuk fbp/fbc dari custom HTML.
+Fix: jangan panggil endpoint privat langsung. Gunakan API resmi `Scalev.analytics.track("facebook", payload)` untuk jalur Scalev, dan bila perlu event browser terlihat di Meta Test Events, gunakan `fbq("track", eventName, params)` tanpa hardcode Pixel ID. Hanya gunakan `trackSingle` jika user eksplisit memberi Pixel ID target.
 
 ## Judul halaman masih default Scalev
 
